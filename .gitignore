@@ -1,0 +1,21 @@
+node_modules/
+test/unit/coverage
+.DS_Store
+
+#Publish
+.ghPages/
+.publish/
+
+#NPM
+npm-debug.log
+yarn-error.log
+
+#Distribution
+build/
+
+# Idea files
+.idea
+*.iml
+*.ipr
+*.iws
+
