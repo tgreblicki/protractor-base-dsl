@@ -12,7 +12,7 @@ import Q from 'q';
  * @property {function} displayed Checks that element is present and displayed.
  * @property {function} enabled Checks that element is enabled.
  * @property {function} getText Returns texts of the specified element.
- * @property {function} getText Negates the condition expectation.
+ * @property {function} not Negates the condition expectation.
  * @property {function} onlyDisplayed Checks that element is displayed.
  * @property {function} present Checks that element is present.
  * @property {function} textContains Checks that text contains provided text chunk.

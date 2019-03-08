@@ -1,9 +1,9 @@
 import webdriver from 'selenium-webdriver/lib/webdriver';
 import {Condition} from './condition';
-import {ElementUtils} from './element-utils';
+import {ElementUtil} from './element-util';
 
 const waitForCondition = (message, condition, selector) => {
-    const finder = () => ElementUtils.elementFinder(selector);
+    const finder = () => ElementUtil.elementFinder(selector);
     const errorMessage = `${message}. Selector: ${finder().locator()}`;
     const cond = new webdriver.Condition(errorMessage, () => condition(finder()));
     return browser.wait(cond, global.defaultExpectationTimeout || 10000);

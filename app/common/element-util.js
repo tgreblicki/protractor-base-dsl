@@ -3,7 +3,7 @@
  *
  * @property {function} elementFinder Creates protractor ElementFinder
  */
-export const ElementUtils = {
+export const ElementUtil = {
     elementFinder: (selector) => {
         if (selector instanceof protractor.ElementFinder) {
             return selector;
