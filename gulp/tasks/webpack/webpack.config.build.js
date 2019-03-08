@@ -1,16 +1,12 @@
-import R from 'ramda';
 import paths from '../../utils/paths';
-import {dependencies} from '../../../package.json';
 
 export default {
     devtool: 'inline-source-map',
     entry: {
-        polyfills: './app/polyfills.js',
-        main: [
-            'eventsource-polyfill',
-            './app/index'
-        ],
-        vendor: R.keys(dependencies)
+        index: ['./app']
+    },
+    externals: {
+        'selenium-webdriver/lib/webdriver': 'selenium-webdriver/lib/webdriver'
     },
     mode: 'development',
     module: {
@@ -31,20 +27,13 @@ export default {
     },
     node: {module: 'empty'},
     optimization: {
-        splitChunks: {
-            cacheGroups: {
-                commons: {
-                    chunks: 'all',
-                    name: 'vendor',
-                    test: /[\\/]node_modules[\\/]/
-                },
-                default: false
-            }
-        }
+        minimize: false
     },
     output: {
-        filename: '[name]-[hash].js',
-        path: paths.devDistDir,
-        publicPath: '/'
-    }
+        filename: '[name].js',
+        library: 'protractor-base-dsl',
+        libraryTarget: 'commonjs2',
+        path: paths.distDir
+    },
+    target: 'node'
 };
