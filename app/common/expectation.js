@@ -41,7 +41,7 @@ export class Expectation {
      * @param selector
      */
     static clickable(selector) {
-        checkCondition(selector, 'for element to be clickable', Condition.clickable);
+        return checkCondition(selector, 'for element to be clickable', Condition.clickable);
     }
 
     /**
@@ -51,7 +51,7 @@ export class Expectation {
      * @param message
      */
     static condition(conditionFunction, message) {
-        ActionUtil.expectExecutedAction(() =>
+        return ActionUtil.expectExecutedAction(() =>
             browser.wait(conditionFunction, global.defaultExpectationTimeout, message, global.defaultExpectationTimeout)
         );
     }

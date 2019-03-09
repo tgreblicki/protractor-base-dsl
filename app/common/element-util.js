@@ -2,7 +2,6 @@
  * Utils to work with protractor elements
  */
 export class ElementUtil {
-
     /**
      * Creates protractor ElementFinder
      *

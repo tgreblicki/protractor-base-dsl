@@ -6,7 +6,6 @@ import Q from 'q';
  * Basic conditions functions which can be used to use in expectations of more high level DSL functions.
  */
 export class Condition {
-
     /**
      * Checks if checkbox is selected or not.
      *
@@ -17,7 +16,7 @@ export class Condition {
             finder.getAttribute('checked').then((checked) =>
                 R.equals(String(expected || false), String(checked || false))
             )
-        )
+        );
     }
 
     /**
@@ -74,7 +73,7 @@ export class Condition {
      * @param finder
      */
     static enabled(finder) {
-        return finder.isEnabled()
+        return finder.isEnabled();
     }
 
     /**
@@ -130,8 +129,8 @@ export class Condition {
             Condition.compose(Condition.present(finder),
                 () => Condition.getText(finder).then((elText) =>
                     elText.indexOf(text) > -1
-                ))
-    };
+                ));
+    }
 
     /**
      * Checks that text equals to expected value.

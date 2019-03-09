@@ -38,7 +38,6 @@ const processError = (retryFn, callerStack, error, current, max) => {
  * Protractor doesn't behave stable and performing the same action more than once helps to overcome flakiness.
  */
 export class ActionUtil {
-
     /**
      * Executes the action once and multiple times tries to match it with the expected condition.
      *
@@ -57,7 +56,7 @@ export class ActionUtil {
      * @param fn {function} Action to execute
      */
     static expectExecutedAction(fn) {
-        expect(ActionUtil.execute(() => fn()));
+        return expect(ActionUtil.execute(() => fn()));
     }
 
     /**

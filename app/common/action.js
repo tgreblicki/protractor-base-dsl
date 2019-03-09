@@ -40,8 +40,8 @@ export class Action {
      */
     static jsClick(selector) {
         Expectation.present(selector);
-        const clickIt = () => arguments[0].click();
-        Action.executeVoidScript(clickIt, ElementUtil.elementFinder(selector));
+        const clickIt = () => R.head(arguments).click(); // eslint-disable-line prefer-rest-params
+        return Action.executeVoidScript(clickIt, ElementUtil.elementFinder(selector));
     }
 
     /**
@@ -51,9 +51,9 @@ export class Action {
      * @param {array} scriptArguments
      */
     static executeVoidScript(scriptFunction, ...scriptArguments) {
-        const script = '(' + scriptFunction + ').apply(null, arguments);';
-        ActionUtil.expectExecutedAction(() => browser.executeScript(script, ...scriptArguments));
-    };
+        const script = `(${scriptFunction}).apply(null, arguments);`;
+        return ActionUtil.expectExecutedAction(() => browser.executeScript(script, ...scriptArguments));
+    }
 
     /**
      * Performs right click on a certain element.
@@ -65,8 +65,10 @@ export class Action {
         const code = (element) => {
             const elem = $(element)[0];
             const clientRect = elem.getBoundingClientRect();
-            $(element).trigger($.Event('contextmenu', {pageX: clientRect.left, pageY: clientRect.top}));
+            const coordinates = {pageX: clientRect.left, pageY: clientRect.top};
+            const event = $.Event('contextmenu', coordinates); // eslint-disable-line new-cap
+            $(element).trigger(event);
         };
-        Action.executeVoidScript(code, selector)
+        return Action.executeVoidScript(code, selector);
     }
 }

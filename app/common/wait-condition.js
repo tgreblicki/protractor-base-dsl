@@ -17,7 +17,6 @@ const waitForCondition = (message, condition, selector) => {
  * 10000 (10 s) will be used instead.
  */
 export class WaitCondition {
-
     /**
      * Waiting that checkbox will be selected/unselected.
      *
