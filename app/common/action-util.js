@@ -36,26 +36,39 @@ const processError = (retryFn, callerStack, error, current, max) => {
 /**
  * Contains utils to do repeatable actions.
  * Protractor doesn't behave stable and performing the same action more than once helps to overcome flakiness.
- *
- * @property {function} execute Executes the defined action once and multiple times tries to match it with
- * the expected condition.
- *
- * @property {function} expectExecutedAction Executes an expected action
- *
- * @property {function} repeatAction Executes action multiple times and matches it with the expected condition.
- * This case is useful i.e. when you need to click on the button, Protractor allegedly do it and proceed further but
- * actually click didn't happen.
- *
  */
-export const ActionUtil = {
-    execute: (action) => {
+export class ActionUtil {
+
+    /**
+     * Executes the action once and multiple times tries to match it with the expected condition.
+     *
+     * @param action
+     */
+    static execute(action) {
         const callerStack = createCallerStack();
         const retry = (current, max) =>
             action().then(undefined, (error) => processError(retry, callerStack, error, current, max));
         return retry(1, maxRetries);
-    },
-    expectExecutedAction: (fn) => expect(ActionUtil.execute(() => fn())),
-    repeatAction: (action, condition) => {
+    }
+
+    /**
+     * Executes an action and expects to match with that certain expectation.
+     *
+     * @param fn {function} Action to execute
+     */
+    static expectExecutedAction(fn) {
+        expect(ActionUtil.execute(() => fn()));
+    }
+
+    /**
+     * Executes an action multiple times and matches it with the expected condition.
+     * This case is useful i.e. when you need to click on the button,
+     * Protractor allegedly do it and proceed further but actually click didn't happen.
+     *
+     * @param action
+     * @param condition
+     */
+    static repeatAction(action, condition) {
         const callerStack = createCallerStack();
         const retry = (current, max) => {
             action();
@@ -63,4 +76,4 @@ export const ActionUtil = {
         };
         return retry(1, maxRetries);
     }
-};
+}

@@ -1,10 +1,14 @@
 /**
  * Utils to work with protractor elements
- *
- * @property {function} elementFinder Creates protractor ElementFinder
  */
-export const ElementUtil = {
-    elementFinder: (selector) => {
+export class ElementUtil {
+
+    /**
+     * Creates protractor ElementFinder
+     *
+     * @param selector
+     */
+    static elementFinder(selector) {
         if (selector instanceof protractor.ElementFinder) {
             return selector;
         } else if (selector && selector.findElementsOverride) {
@@ -12,4 +16,4 @@ export const ElementUtil = {
         }
         return element(By.css(selector));
     }
-};
+}

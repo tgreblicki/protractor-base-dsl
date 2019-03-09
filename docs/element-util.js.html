@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>element-util.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,35 +31,38 @@
 
 <div id="main">
     
+    <h1 class="page-title">element-util.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Utils to work with protractor elements
+ */
+export class ElementUtil {
 
-
-    <section class="package">
-        <h3> </h3>		
+    /**
+     * Creates protractor ElementFinder
+     *
+     * @param selector
+     */
+    static elementFinder(selector) {
+        if (selector instanceof protractor.ElementFinder) {
+            return selector;
+        } else if (selector &amp;&amp; selector.findElementsOverride) {
+            return element(selector);
+        }
+        return element(By.css(selector));
+    }
+}
+</code></pre>
+        </article>
     </section>
-
-
-
-
-
-
-
-
-
-    
-
-
-
-    <section class="readme">
-        <article><h1>Protractor Base DSL</h1><p>This library will help you with providing base DSL classes to lessen the burden of creating protractor scenarios.</p></article>
-    </section>
-
-
 
 
 

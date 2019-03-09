@@ -17,27 +17,16 @@ const checkCondition = (selector, message, condition) => {
 
 /**
  * Expectations created based on WaitCondition DSL methods.
- *
- * @property {function} attributeEquals Checks if attribute has expected text.
- * @property {function} clickable Checks if element is clickable.
- * @property {function} condition Checks that provided condition is met.  You can use it when no other expectation
- * doesn't fit your current needs.
- * @property {function} count Checks that number of elements are present.
- * @property {function} countAtLeast Checks not less than certain number of elements are present.
- * @property {function} displayed Checks that element is in DOM and visible to the user.
- * @property {function} emptyText Checks that it is an empty text for a certain element.
- * @property {function} enabled Checks that element is enabled (opposite to disabled), you can use it to check that
- * element is not disabled anymore and you can perform some actions.
- * @property {function} notDisplayed Checks that element is not visible to user but can be present in DOM.
- * @property {function} notPresent Checks that element is not visible to user and not present in DOM.
- * @property {function} present Checks that element might be not visible to the user but present in DOM.
- * @property {function} textContains Checks that element contains a certain text.
- * @property {function} textEquals Checks that element has a certain text.
- * @property {function} textNotEqual Checks that element doesn't have a certain text.
- *
  */
-export const Expectation = {
-    attributeEquals: (cssSelector, attribute, text) => {
+export class Expectation {
+    /**
+     * Checks if attribute has expected text.
+     *
+     * @param cssSelector
+     * @param attribute
+     * @param text
+     */
+    static attributeEquals(cssSelector, attribute, text) {
         const EC = protractor.ExpectedConditions;
         const elementFinder = ElementUtil.elementFinder(cssSelector);
         const textIs = () =>
@@ -45,39 +34,135 @@ export const Expectation = {
                 (actualText) => R.equals(R.trim(actualText), R.trim(text))
             );
         return Expectation.condition(EC.and(EC.presenceOf(elementFinder), textIs));
-    },
-    clickable: (selector) =>
-        checkCondition(selector, 'for element to be clickable', Condition.clickable),
-    condition: (conditionFunction, message) =>
+    }
+
+    /**
+     * Checks if element is clickable.
+     * @param selector
+     */
+    static clickable(selector) {
+        checkCondition(selector, 'for element to be clickable', Condition.clickable);
+    }
+
+    /**
+     * Checks that provided condition is met.  You can use it when no other expectation
+     * doesn't fit your current needs.
+     * @param conditionFunction
+     * @param message
+     */
+    static condition(conditionFunction, message) {
         ActionUtil.expectExecutedAction(() =>
             browser.wait(conditionFunction, global.defaultExpectationTimeout, message, global.defaultExpectationTimeout)
-        ),
-    count: (selector, expectedCount) => {
+        );
+    }
+
+    /**
+     * Checks that number of elements are present.
+     *
+     * @param selector
+     * @param expectedCount
+     */
+    static count(selector, expectedCount) {
         const countIs = () =>
             element.all(By.css(selector)).count().then((count) => R.equals(count, expectedCount));
         return Expectation.condition(countIs);
-    },
-    countAtLeast: (selector, expectedCount) => {
+    }
+
+    /**
+     * Checks not less than certain number of elements are present.
+     *
+     * @param selector
+     * @param expectedCount
+     */
+    static countAtLeast(selector, expectedCount) {
         const countIs = () =>
             element.all(By.css(selector)).count().then((count) => R.gte(count, expectedCount));
         return Expectation.condition(countIs);
-    },
-    displayed: (selector) =>
-        ActionUtil.expectExecutedAction(() => WaitCondition.displayed(selector)),
-    emptyText: (selector) =>
-        ActionUtil.expectExecutedAction(() => WaitCondition.textEquals(selector, '')),
-    enabled: (selector) =>
-        ActionUtil.expectExecutedAction(() => WaitCondition.enabled(selector)),
-    notDisplayed: (selector) =>
-        ActionUtil.expectExecutedAction(() => WaitCondition.notDisplayed(selector)),
-    notPresent: (selector) =>
-        ActionUtil.expectExecutedAction(() => WaitCondition.notPresent(selector)),
-    present: (selector) =>
-        ActionUtil.expectExecutedAction(() => WaitCondition.present(selector)),
-    textContains: (selector, text) =>
-        ActionUtil.expectExecutedAction(() => WaitCondition.textContains(selector, text)),
-    textEquals: (selector, text) =>
-        ActionUtil.expectExecutedAction(() => WaitCondition.textEquals(selector, text)),
-    textNotEqual: (selector, text) =>
-        checkCondition(selector, `for element's text not to be '${text}'`, Condition.not(Condition.textEquals(text)))
-};
+    }
+
+    /**
+     * Checks that element is in DOM and visible to the user.
+     *
+     * @param selector
+     */
+    static displayed(selector) {
+        return ActionUtil.expectExecutedAction(() => WaitCondition.displayed(selector));
+    }
+
+    /**
+     * Checks that it is an empty text for a certain element.
+     *
+     * @param selector
+     */
+    static emptyText(selector) {
+        return ActionUtil.expectExecutedAction(() => WaitCondition.textEquals(selector, ''));
+    }
+
+    /**
+     * Checks that element is enabled (opposite to disabled), you can use it to check that
+     * element is not disabled anymore and you can perform some actions.
+     *
+     * @param selector
+     */
+    static enabled(selector) {
+        return ActionUtil.expectExecutedAction(() => WaitCondition.enabled(selector));
+    }
+
+    /**
+     * Checks that element is not visible to user but can be present in DOM.
+     *
+     * @param selector
+     */
+    static notDisplayed(selector) {
+        return ActionUtil.expectExecutedAction(() => WaitCondition.notDisplayed(selector));
+    }
+
+    /**
+     * Checks that element is not visible to user and not present in DOM.
+     *
+     * @param selector
+     */
+    static notPresent(selector) {
+        return ActionUtil.expectExecutedAction(() => WaitCondition.notPresent(selector));
+    }
+
+    /**
+     * Checks that element might be not visible to the user but present in DOM.
+     *
+     * @param selector
+     */
+    static present(selector) {
+        return ActionUtil.expectExecutedAction(() => WaitCondition.present(selector));
+    }
+
+    /**
+     * Checks that element contains a certain text.
+     *
+     * @param selector
+     * @param text
+     */
+    static textContains(selector, text) {
+        return ActionUtil.expectExecutedAction(() => WaitCondition.textContains(selector, text));
+    }
+
+    /**
+     * Checks that element has a certain text.
+     *
+     * @param selector
+     * @param text
+     */
+    static textEquals(selector, text) {
+        return ActionUtil.expectExecutedAction(() => WaitCondition.textEquals(selector, text));
+    }
+
+    /**
+     * Checks that element doesn't have a certain text.
+     *
+     * @param selector
+     * @param text
+     */
+    static textNotEqual(selector, text) {
+        const msg = `for element's text not to be '${text}'`;
+        return checkCondition(selector, msg, Condition.not(Condition.textEquals(text)));
+    }
+}

@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>action-util.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,35 +31,98 @@
 
 <div id="main">
     
+    <h1 class="page-title">action-util.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import log from 'loglevel';
+import Q from 'q';
+import R from 'ramda';
+import PrettyError from 'pretty-error';
 
+const delayTime = 1000;
+const maxRetries = 3;
 
-    <section class="package">
-        <h3> </h3>		
+const createCallerStack = () => {
+    let callerStack;
+    try {
+        throw new Error();
+    } catch (exception) {
+        callerStack = exception;
+    }
+    return callerStack;
+};
+
+const processError = (retryFn, callerStack, error, current, max) => {
+    if (current &lt;= max) {
+        log.info(`Conditions is failed. Attempt ${current} of ${max}`);
+        return Q.delay(delayTime).then(() => retryFn(current + 1, max));
+    }
+
+    const customError = new Error(error.message);
+    customError.stack = callerStack.stack;
+    return Q.reject(
+        R.pipe(
+            (stack) => new PrettyError().render(stack),
+            R.append(R.__, [error.message]),
+            R.join('\n')
+        )(callerStack)
+    );
+};
+
+/**
+ * Contains utils to do repeatable actions.
+ * Protractor doesn't behave stable and performing the same action more than once helps to overcome flakiness.
+ */
+export class ActionUtil {
+
+    /**
+     * Executes the action once and multiple times tries to match it with the expected condition.
+     *
+     * @param action
+     */
+    static execute(action) {
+        const callerStack = createCallerStack();
+        const retry = (current, max) =>
+            action().then(undefined, (error) => processError(retry, callerStack, error, current, max));
+        return retry(1, maxRetries);
+    }
+
+    /**
+     * Executes an action and expects to match with that certain expectation.
+     *
+     * @param fn {function} Action to execute
+     */
+    static expectExecutedAction(fn) {
+        expect(ActionUtil.execute(() => fn()));
+    }
+
+    /**
+     * Executes an action multiple times and matches it with the expected condition.
+     * This case is useful i.e. when you need to click on the button,
+     * Protractor allegedly do it and proceed further but actually click didn't happen.
+     *
+     * @param action
+     * @param condition
+     */
+    static repeatAction(action, condition) {
+        const callerStack = createCallerStack();
+        const retry = (current, max) => {
+            action();
+            return condition().then(Q.resolve, (error) => processError(retry, callerStack, error, current, max));
+        };
+        return retry(1, maxRetries);
+    }
+}
+</code></pre>
+        </article>
     </section>
-
-
-
-
-
-
-
-
-
-    
-
-
-
-    <section class="readme">
-        <article><h1>Protractor Base DSL</h1><p>This library will help you with providing base DSL classes to lessen the burden of creating protractor scenarios.</p></article>
-    </section>
-
-
 
 
 
