@@ -1,13 +1,51 @@
-import $ from 'jquery';
 import R from 'ramda';
 import {Expectation} from './expectation';
 import {ActionUtil} from './action-util';
 import {ElementUtil} from './element-util';
 
+const bulkOfClicks = (action, selectors) => {
+    for (const selector of selectors) {
+        action(selector);
+    }
+};
+
 /**
  * Base DSL actions
  */
 export class Action {
+    /**
+     * Performs a bulk of Ctrl clicks.
+     *
+     * @param selectors
+     */
+    static bulkCtrlKey(selectors) {
+        return bulkOfClicks(Action.ctrlClick, selectors);
+    }
+
+    /**
+     * Performs a bulk of Shift clicks.
+     *
+     * @param selectors
+     */
+    static bulkShiftKey(selectors) {
+        return bulkOfClicks(Action.shiftClick, selectors);
+    }
+
+    /**
+     * Clear text in found element.
+     *
+     * @param selector
+     */
+    static clearText(selector) {
+        const element = ElementUtil.elementFinder(selector);
+        element.getAttribute('value').then((value) => {
+            if (value) {
+                R.times(() => element.sendKeys(protractor.Key.BACK_SPACE), value.length);
+            }
+        });
+        return Expectation.emptyText(selector);
+    }
+
     /**
      * Clicks on element if it's clickable.
      * For example button can be disabled and click won't occur, you need to fetch that unaccepted behavior earlier.
@@ -34,6 +72,26 @@ export class Action {
     }
 
     /**
+     * Performs double click on a certain element.
+     *
+     * @param selector
+     */
+    static doubleClick(selector) {
+        Expectation.displayed(selector);
+        const doubleClick = (element) => bean.fire(element, 'dblclick');
+        return Action.executeVoidScript(doubleClick, ElementUtil.elementFinder(selector));
+    }
+
+    /**
+     * Performs Ctrl click on a certain element.
+     *
+     * @param selector
+     */
+    static ctrlClick(selector) {
+        return Action.jQueryClick(selector, {ctrlKey: true});
+    }
+
+    /**
      * Executes native JavaScript function.
      *
      * @param {function} scriptFunction
@@ -56,6 +114,17 @@ export class Action {
     }
 
     /**
+     * Hovers on a certain element.
+     *
+     * @param selector
+     */
+    static hover(selector) {
+        Expectation.displayed(selector);
+        const hover = (element) => bean.fire(element, 'mouseover');
+        Action.executeVoidScript(hover, ElementUtil.elementFinder(selector));
+    }
+
+    /**
      * Clicks on element by using native JavaScript execution.
      *
      * @param {Object} selector CSS Selector or Protractor Element
@@ -68,6 +137,20 @@ export class Action {
         }
 
         return Action.executeVoidScript(clickIt, ElementUtil.elementFinder(selector));
+    }
+
+    /**
+     * Clicks on element with an extra parameters.
+     * This function can be used for example to perform Ctrl, Shift clicks.
+     *
+     * @param selector
+     * @param eventData
+     */
+    static jQueryClick(selector, eventData) {
+        Expectation.displayed(selector);
+        const code = (element, eData) =>
+            $(element).trigger($.Event('click', eData)); // eslint-disable-line new-cap
+        return Action.executeVoidScript(code, ElementUtil.elementFinder(selector), eventData);
     }
 
     /**
@@ -85,5 +168,29 @@ export class Action {
             $(element).trigger(event);
         };
         return Action.executeVoidScript(code, selector);
+    }
+
+    /**
+     * Performs Shift click on a certain element.
+     *
+     * @param selector
+     */
+    static shiftClick(selector) {
+        return Action.jQueryClick(selector, {shiftKey: true});
+    }
+
+    /**
+     * Types a text into a specified element.
+     *
+     * @param selector
+     * @param text
+     */
+    static typeText(selector, text) {
+        if (text) {
+            Action.click(ElementUtil.elementFinder(selector));
+            for (const chars of text.match(/.{1,10}/g)) {
+                ElementUtil.elementFinder(selector).sendKeys(chars);
+            }
+        }
     }
 }

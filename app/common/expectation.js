@@ -15,25 +15,86 @@ const checkCondition = (selector, message, condition) => {
     return expect(ActionUtil.execute(action));
 };
 
+const checkPresenceAndCondition = (selector, condition) => {
+    const EC = protractor.ExpectedConditions;
+    const elementFinder = ElementUtil.elementFinder(selector);
+
+    return ActionUtil.expectExecutedAction(() =>
+        browser.wait(EC.and(EC.presenceOf(elementFinder), condition), global.defaultExpectationTimeout));
+};
+
 /**
  * Expectations created based on WaitCondition DSL methods.
  */
 export class Expectation {
     /**
+     * Checks that attribute of element meets a certain condition.
+     *
+     * @param selector
+     * @param attrName
+     * @param condition
+     */
+    static attributeCondition(selector, attrName, condition) {
+        const elementFinder = ElementUtil.elementFinder(selector);
+        const conditionHolds = () =>
+            elementFinder.getAttribute(attrName).then(
+                (actualValue) => !R.isNil(actualValue) && condition(actualValue),
+                R.F);
+
+        return checkPresenceAndCondition(selector, conditionHolds);
+    }
+
+    /**
      * Checks if attribute has expected text.
      *
-     * @param cssSelector
+     * @param selector
      * @param attribute
      * @param text
      */
-    static attributeEquals(cssSelector, attribute, text) {
-        const EC = protractor.ExpectedConditions;
-        const elementFinder = ElementUtil.elementFinder(cssSelector);
+    static attributeEquals(selector, attribute, text) {
+        const elementFinder = ElementUtil.elementFinder(selector);
         const textIs = () =>
             elementFinder.getAttribute(attribute).then(
                 (actualText) => R.equals(R.trim(actualText), R.trim(text))
             );
-        return Expectation.condition(EC.and(EC.presenceOf(elementFinder), textIs));
+
+        return checkPresenceAndCondition(selector, textIs);
+    }
+
+    /**
+     * Checks that attribute value contains an expected text.
+     *
+     * @param selector
+     * @param attrName
+     * @param value
+     */
+    static attributeContainsValue(selector, attrName, value) {
+        const condition = (actualValue) => actualValue.indexOf(value) > -1;
+        return Expectation.attributeCondition(selector, attrName, condition);
+    }
+
+    /**
+     * Checks that attribute value is not less than a specified value.
+     *
+     * @param selector
+     * @param attrName
+     * @param minValue
+     */
+    static attributeValueNotLessThan(selector, attrName, minValue) {
+        const condition = (actualValue) => parseInt(actualValue, 10) >= minValue;
+        return Expectation.attributeCondition(selector, attrName, condition);
+    }
+
+    /**
+     * Checks that attribute value is not more than a specified value.
+     *
+     * @param selector
+     * @param attrName
+     * @param maxValue
+     */
+    static attributeValueNotMoreThan(selector, attrName, maxValue) {
+        const condition = (actualText) => Math.abs(parseInt(actualText, 10) - maxValue) <= 1;
+        return Expectation.attributeCondition(selector, attrName, condition);
     }
 
     /**
@@ -63,8 +124,7 @@ export class Expectation {
      * @param expectedCount
      */
     static count(selector, expectedCount) {
-        const countIs = () =>
-            element.all(By.css(selector)).count().then((count) => R.equals(count, expectedCount));
+        const countIs = () => element.all(By.css(selector)).count().then((count) => R.equals(count, expectedCount));
         return Expectation.condition(countIs);
     }
 
@@ -115,6 +175,32 @@ export class Expectation {
      */
     static enabled(selector) {
         return ActionUtil.expectExecutedAction(() => WaitCondition.enabled(selector));
+    }
+
+    /**
+     * Checks if element has a certain attribute name.
+     *
+     * @param selector
+     * @param attrName
+     */
+    static hasAttribute(selector, attrName) {
+        const elementFilter = () => ElementUtil.elementFinder(selector);
+        const hasAttr = () =>
+            elementFilter().getAttribute(attrName).then((attrValue) => !R.isNil(attrValue), R.F);
+        return checkPresenceAndCondition(selector, hasAttr);
+    }
+
+    /**
+     * Checks that element doesn't have a certain attribute name.
+     *
+     * @param selector
+     * @param attrName
+     */
+    static hasNoAttribute(selector, attrName) {
+        const elementFilter = () => ElementUtil.elementFinder(selector);
+        const hasNoAttr = () =>
+            elementFilter().getAttribute(attrName).then((attrValue) => R.isNil(attrValue), R.F);
+        return checkPresenceAndCondition(selector, hasNoAttr);
     }
 
     /**

@@ -36,7 +36,7 @@
     "babel-loader": "8.0.4",
     "babel-plugin-ramda": "1.6.3",
     "babel-plugin-root-import": "6.1.0",
-    "bean": "1.0.15",
+    "bean": "^1.0.15",
     "body-parser": "1.18.3",
     "browser-unhandled-rejection": "1.0.2",
     "console-error-throws-error": "1.2.1",

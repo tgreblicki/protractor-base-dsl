@@ -65,6 +65,7 @@
     "$": true,
     "_": true,
     "afterEach": true,
+    "bean": true,
     "beforeEach": true,
     "Blob": true,
     "browser": true,
