@@ -1,4 +1,6 @@
 import R from 'ramda';
+import KeyCodes from 'keycode-js';
+import ReactTestUtils from 'react-dom/test-utils';
 import {Expectation} from './expectation';
 import {ActionUtil} from './action-util';
 import {ElementUtil} from './element-util';
@@ -69,6 +71,24 @@ export class Action {
     static clickIfClickable(selector) {
         const finder = ElementUtil.elementFinder(selector);
         return expect(ActionUtil.execute(() => finder.click().then(R.T, R.T)));
+    }
+
+    /**
+     * Performs an enter on a certain element.
+     *
+     * @param selector
+     */
+    static clickEnter(selector) {
+        return Action.keyDown(selector, KeyCodes.KEY_RETURN);
+    }
+
+    /**
+     * Performs an escape on a certain element.
+     *
+     * @param selector
+     */
+    static clickEscape(selector) {
+        return Action.keyDown(selector, KeyCodes.KEY_ESCAPE);
     }
 
     /**
@@ -152,6 +172,18 @@ export class Action {
             $(element).trigger($.Event('click', eData)); // eslint-disable-line new-cap
         return Action.executeVoidScript(code, ElementUtil.elementFinder(selector), eventData);
     }
+
+    /**
+     * Performs a custom keydown event on a certain element.
+     *
+     * @param selector
+     * @param keyCode
+     */
+    static keyDown = (selector, keyCode) => {
+        const sendKey = (element) =>
+            ReactTestUtils.Simulate.keyDown(element, {charCode: keyCode, keyCode, which: keyCode});
+        return Action.executeVoidScript(sendKey, ElementUtil.elementFinder(selector), keyCode);
+    };
 
     /**
      * Performs right click on a certain element.

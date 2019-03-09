@@ -6,7 +6,10 @@ export class Window {
      * Set the default window size.
      */
     static setDefaultSize = () =>
-        browser.manage().window().setSize(global.defaultBrowserWidth, global.defaultBrowserHeight);
+        browser.manage().window().setSize(
+            global.defaultBrowserWidth || 768,
+            global.defaultBrowserHeight || 1024
+        );
 
     /**
      * Set the custom window size.
