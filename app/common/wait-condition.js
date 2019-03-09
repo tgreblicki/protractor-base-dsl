@@ -40,6 +40,15 @@ export class WaitCondition {
     }
 
     /**
+     * Waiting for a disabled element.
+     *
+     * @param selector
+     */
+    static disabled(selector) {
+        return waitForCondition('For element to be disabled', Condition.not(Condition.enabled), selector);
+    }
+
+    /**
      * Waiting for a displayed element.
      *
      * @param selector

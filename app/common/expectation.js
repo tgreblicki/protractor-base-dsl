@@ -81,6 +81,15 @@ export class Expectation {
     }
 
     /**
+     * Checks that element is disabled.
+     *
+     * @param selector
+     */
+    static disabled(selector) {
+        return ActionUtil.expectExecutedAction(() => WaitCondition.disabled(selector));
+    }
+
+    /**
      * Checks that element is in DOM and visible to the user.
      *
      * @param selector

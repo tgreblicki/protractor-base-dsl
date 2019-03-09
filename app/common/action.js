@@ -34,17 +34,6 @@ export class Action {
     }
 
     /**
-     * Clicks on element by using native JavaScript execution.
-     *
-     * @param {Object} selector CSS Selector or Protractor Element
-     */
-    static jsClick(selector) {
-        Expectation.present(selector);
-        const clickIt = () => R.head(arguments).click(); // eslint-disable-line prefer-rest-params
-        return Action.executeVoidScript(clickIt, ElementUtil.elementFinder(selector));
-    }
-
-    /**
      * Executes native JavaScript function.
      *
      * @param {function} scriptFunction
@@ -53,6 +42,32 @@ export class Action {
     static executeVoidScript(scriptFunction, ...scriptArguments) {
         const script = `(${scriptFunction}).apply(null, arguments);`;
         return ActionUtil.expectExecutedAction(() => browser.executeScript(script, ...scriptArguments));
+    }
+
+    /**
+     * Focuses on a certain element.
+     * Mainly has to be used for input fields.
+     *
+     * @param selector
+     */
+    static focus(selector) {
+        Expectation.clickable(selector);
+        return ActionUtil.expectExecutedAction(() => ElementUtil.elementFinder(selector).focus());
+    }
+
+    /**
+     * Clicks on element by using native JavaScript execution.
+     *
+     * @param {Object} selector CSS Selector or Protractor Element
+     */
+    static jsClick(selector) {
+        Expectation.present(selector);
+
+        function clickIt() {
+            arguments[0].click(); // eslint-disable-line prefer-rest-params
+        }
+
+        return Action.executeVoidScript(clickIt, ElementUtil.elementFinder(selector));
     }
 
     /**
