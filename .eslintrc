@@ -86,6 +86,7 @@
     "mocha": true,
     "moment": true,
     "ObjectObserver": true,
+    "ReactTestUtils": true,
     "process": true,
     "Promise": true,
     "protractor": true,

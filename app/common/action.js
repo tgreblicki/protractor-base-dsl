@@ -1,6 +1,5 @@
 import R from 'ramda';
 import KeyCodes from 'keycode-js';
-import ReactTestUtils from 'react-dom/test-utils';
 import {Expectation} from './expectation';
 import {ActionUtil} from './action-util';
 import {ElementUtil} from './element-util';
@@ -180,8 +179,8 @@ export class Action {
      * @param keyCode
      */
     static keyDown = (selector, keyCode) => {
-        const sendKey = (element) =>
-            ReactTestUtils.Simulate.keyDown(element, {charCode: keyCode, keyCode, which: keyCode});
+        const sendKey = (element, code) =>
+            ReactTestUtils.Simulate.keyDown(element, {charCode: code, keyCode: code, which: code});
         return Action.executeVoidScript(sendKey, ElementUtil.elementFinder(selector), keyCode);
     };
 

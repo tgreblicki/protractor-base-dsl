@@ -87,8 +87,6 @@
     "protractor-jasmine2-html-reporter": "0.0.7",
     "protractor-screenshot-reporter": "0.0.5",
     "q": "1.5.1",
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
     "require-dir": "1.2.0",
     "rimraf": "2.6.2",
     "selenium-webdriver": "3.6.0",
