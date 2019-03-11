@@ -19,4 +19,10 @@ export class Window {
      */
     static setSize = (width, height) =>
         browser.manage().window().setSize(width, height);
+
+    /**
+     * Refreshes the window content.
+     */
+    static refresh = () =>
+        browser.driver.navigate().refresh();
 }

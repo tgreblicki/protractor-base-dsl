@@ -190,6 +190,11 @@ export class Expectation {
         return checkPresenceAndCondition(selector, hasAttr);
     }
 
+    static hasClassName(selector, className) {
+        const element = ElementUtil.elementFinder(selector);
+        return element.getAttribute('class').then((classes) => R.contains(className, classes.split(' ')));
+    }
+
     /**
      * Checks that element doesn't have a certain attribute name.
      *

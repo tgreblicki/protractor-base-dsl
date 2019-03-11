@@ -186,8 +186,6 @@ export class Action {
 
     /**
      * Performs right click on a certain element.
-     *
-     * @param {Object} selector CSS Selector or Protractor Element
      */
     static rightClick(selector) {
         Expectation.clickable(selector);
