@@ -192,7 +192,7 @@ export class Expectation {
 
     static hasClassName(selector, className) {
         const element = ElementUtil.elementFinder(selector);
-        return element.getAttribute('class').then((classes) => R.contains(className, classes.split(' ')));
+        return element.getAttribute('class').then((classes) => R.includes(className, classes.split(' ')));
     }
 
     /**
