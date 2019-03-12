@@ -40,7 +40,7 @@ export class Condition {
                 try {
                     return Q.when(nextCondition());
                 } catch (error) {
-                    log.info('Happened error in condition compose: ', error);
+                    log.error('Happened error in condition compose: ', error);
                 }
             }
             return Q.when(result);
@@ -140,7 +140,7 @@ export class Condition {
     static textEquals(text) {
         let times = 1;
 
-        const compareText = (finder) => Condition.getText(finder).then(
+        const compareText = (finder) => () => Condition.getText(finder).then(
             (elText) => {
                 if (times > 3) {
                     log.warn('Expected that ', elText, ' be equal to: ', text, ' tries: ', times);
