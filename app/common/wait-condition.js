@@ -18,6 +18,20 @@ const waitForCondition = (message, condition, selector) => {
  */
 export class WaitCondition {
     /**
+     * Checks a custom condition for a certain element.
+     *
+     * @param message
+     * @param condition
+     * @param selector
+     */
+    static check(message, condition, selector) {
+        const finder = () => ElementUtil.elementFinder(selector);
+        const errorMessage = `${message}. Selector: ${finder().locator()}`;
+        const cond = new webdriver.Condition(errorMessage, () => condition(finder()));
+        return browser.wait(cond, global.defaultExpectationTimeout || 10000);
+    }
+
+    /**
      * Waiting that checkbox will be selected/unselected.
      *
      * @param selector

@@ -1,5 +1,6 @@
 import R from 'ramda';
 import KeyCodes from 'keycode-js';
+import {code as dragAndDrop} from 'xl-html-dnd';
 import {Expectation} from './expectation';
 import {ActionUtil} from './action-util';
 import {ElementUtil} from './element-util';
@@ -150,6 +151,7 @@ export class Action {
      */
     static jsClick(selector) {
         Expectation.present(selector);
+        Expectation.clickable(selector);
 
         function clickIt() {
             arguments[0].click(); // eslint-disable-line prefer-rest-params
@@ -159,17 +161,20 @@ export class Action {
     }
 
     /**
-     * Clicks on element with an extra parameters.
-     * This function can be used for example to perform Ctrl, Shift clicks.
+     * Drag the element and drops it to a certain area.
      *
-     * @param selector
-     * @param eventData
+     * @param fromElement
+     * @param toElement
      */
-    static jQueryClick(selector, eventData) {
-        Expectation.displayed(selector);
-        const code = (element, eData) =>
-            $(element).trigger($.Event('click', eData)); // eslint-disable-line new-cap
-        return Action.executeVoidScript(code, ElementUtil.elementFinder(selector), eventData);
+    static jsDragAndDrop(fromElement, toElement) {
+        Expectation.present(fromElement);
+        Expectation.present(toElement);
+
+        const draggedItem = ElementUtil.elementFinder(fromElement);
+        const droppable = ElementUtil.elementFinder(toElement);
+        const script = () => browser.executeScript(dragAndDrop, draggedItem, droppable, 500);
+        Action.executeVoidScript(script);
+        browser.sleep(1500);
     }
 
     /**
@@ -183,21 +188,6 @@ export class Action {
             ReactTestUtils.Simulate.keyDown(element, {charCode: code, keyCode: code, which: code});
         return Action.executeVoidScript(sendKey, ElementUtil.elementFinder(selector), keyCode);
     };
-
-    /**
-     * Performs right click on a certain element.
-     */
-    static rightClick(selector) {
-        Expectation.clickable(selector);
-        const code = (element) => {
-            const elem = $(element)[0];
-            const clientRect = elem.getBoundingClientRect();
-            const coordinates = {pageX: clientRect.left, pageY: clientRect.top};
-            const event = $.Event('contextmenu', coordinates); // eslint-disable-line new-cap
-            $(element).trigger(event);
-        };
-        return Action.executeVoidScript(code, selector);
-    }
 
     /**
      * Performs Shift click on a certain element.

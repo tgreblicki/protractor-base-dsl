@@ -3,6 +3,8 @@ export {ActionUtil} from './common/action-util';
 export {Condition} from './common/condition';
 export {Expectation} from './common/expectation';
 export {ElementUtil} from './common/element-util';
+export {JQueryAction} from './common/jquery-action';
+export {ReactAction} from './common/react-action';
 export {WaitCondition} from './common/wait-condition';
 export {Window} from './common/window';
 export {XPath} from './common/xpath';

@@ -1,19 +1,12 @@
-import webdriver from 'selenium-webdriver/lib/webdriver';
+/* eslint-disable max-lines */
 import R from 'ramda';
 import {ActionUtil} from './action-util';
 import {ElementUtil} from './element-util';
 import {Condition} from './condition';
 import {WaitCondition} from './wait-condition';
 
-const checkCondition = (selector, message, condition) => {
-    const action = () => {
-        const finder = () => ElementUtil.elementFinder(selector);
-        const errorMessage = `${message}. Selector: ${finder().locator()}`;
-        const cond = new webdriver.Condition(errorMessage, () => condition(finder()));
-        return browser.wait(cond, global.defaultExpectationTimeout);
-    };
-    return expect(ActionUtil.execute(action));
-};
+const checkCondition = (selector, message, condition) =>
+    ActionUtil.expectExecutedAction(() => WaitCondition.check(selector, message, condition));
 
 const checkPresenceAndCondition = (selector, condition) => {
     const EC = protractor.ExpectedConditions;
@@ -69,7 +62,7 @@ export class Expectation {
      * @param value
      */
     static attributeContainsValue(selector, attrName, value) {
-        const condition = (actualValue) => actualValue.indexOf(value) > -1;
+        const condition = (actualValue) => R.gt(actualValue.indexOf(value), 1);
         return Expectation.attributeCondition(selector, attrName, condition);
     }
 
@@ -81,7 +74,7 @@ export class Expectation {
      * @param minValue
      */
     static attributeValueNotLessThan(selector, attrName, minValue) {
-        const condition = (actualValue) => parseInt(actualValue, 10) >= minValue;
+        const condition = (actualValue) => R.gte(parseInt(actualValue, 10), minValue);
         return Expectation.attributeCondition(selector, attrName, condition);
     }
 
@@ -93,8 +86,18 @@ export class Expectation {
      * @param maxValue
      */
     static attributeValueNotMoreThan(selector, attrName, maxValue) {
-        const condition = (actualText) => Math.abs(parseInt(actualText, 10) - maxValue) <= 1;
+        const condition = (actualText) => R.lte(Math.abs(parseInt(actualText, 10) - maxValue), 1);
         return Expectation.attributeCondition(selector, attrName, condition);
+    }
+
+    /**
+     * Checks that checkbox will be selected/unselected.
+     *
+     * @param selector
+     * @param checked
+     */
+    static checkboxChecked(selector, checked) {
+        return ActionUtil.expectExecutedAction(() => WaitCondition.checkboxChecked(selector, checked));
     }
 
     /**
@@ -141,6 +144,18 @@ export class Expectation {
     }
 
     /**
+     * Checks that date component has an expected value
+     *
+     * @param selector
+     * @param dateValue
+     */
+    static dateValue(selector, dateValue) {
+        const expectationFunction = (dateFormat) =>
+            Expectation.attributeEquals(selector, 'value', dateValue.format(dateFormat));
+        return Expectation.withLocaleDate(expectationFunction);
+    }
+
+    /**
      * Checks that element is disabled.
      *
      * @param selector
@@ -178,6 +193,30 @@ export class Expectation {
     }
 
     /**
+     * Checks that element has a scrolling.
+     *
+     * @param selector
+     */
+    static hasScroll(selector) {
+        const element = ElementUtil.elementFinder(selector);
+        expect(element.getSize().then(
+            (size) =>
+                Expectation.attributeValueNotLessThan(element, 'scrollHeight', size.height - 10)));
+    }
+
+    /**
+     * Checks that element doesn't have a scrolling.
+     *
+     * @param selector
+     */
+    static hasNoScroll(selector) {
+        const element = ElementUtil.elementFinder(selector);
+        expect(element.getSize().then(
+            (size) =>
+                Expectation.attributeValueNotMoreThan(element, 'scrollHeight', size.height)));
+    }
+
+    /**
      * Checks if element has a certain attribute name.
      *
      * @param selector
@@ -209,6 +248,20 @@ export class Expectation {
     }
 
     /**
+     * This function is used with a combination in other function to check a date in a local date format.
+     *
+     * @param expectationFunction
+     * @param defaultDateFormat
+     */
+    static withLocaleDate(expectationFunction, defaultDateFormat) {
+        return ActionUtil.expectExecutedAction(() => {
+            browser.executeScript(() =>
+                R.path(['languages', 'length'], navigator) ? navigator.languages[0] : navigator.userLanguage
+            ).then(() => defaultDateFormat).then((dateFormat) => expectationFunction(dateFormat));
+        });
+    }
+
+    /**
      * Checks that element is not visible to user but can be present in DOM.
      *
      * @param selector
@@ -233,6 +286,16 @@ export class Expectation {
      */
     static present(selector) {
         return ActionUtil.expectExecutedAction(() => WaitCondition.present(selector));
+    }
+
+    /**
+     * Checks that element has readonly attribute.
+     *
+     * @param selector
+     */
+    static readOnly(selector) {
+        Expectation.present(selector);
+        return Expectation.attributeContainsValue(selector, 'readonly', 'true');
     }
 
     /**
@@ -265,4 +328,17 @@ export class Expectation {
         const msg = `for element's text not to be '${text}'`;
         return checkCondition(selector, msg, Condition.not(Condition.textEquals(text)));
     }
+
+    /**
+     * Checks that element doesn't have a certain text.
+     *
+     * @param selector
+     * @param regex
+     */
+    static textMatches(selector, regex) {
+        const msg = `for element text to be matched by '${regex}'`;
+        return checkCondition(selector, msg, Condition.not(Condition.textMatches(regex)));
+    }
 }
+
+/* eslint-enable max-lines */

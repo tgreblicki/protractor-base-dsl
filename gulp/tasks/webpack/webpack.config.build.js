@@ -6,7 +6,8 @@ export default {
         index: ['./app']
     },
     externals: {
-        'selenium-webdriver/lib/webdriver': 'selenium-webdriver/lib/webdriver'
+        'selenium-webdriver/lib/webdriver': 'selenium-webdriver/lib/webdriver',
+        'xl-html-dnd': 'xl-html-dnd'
     },
     mode: 'development',
     module: {

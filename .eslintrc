@@ -85,6 +85,7 @@
     "module": true,
     "mocha": true,
     "moment": true,
+    "navigator": true,
     "ObjectObserver": true,
     "ReactTestUtils": true,
     "process": true,
@@ -756,7 +757,7 @@
     // Report CommonJS require calls and module.exports or exports.*
     "import/no-amd": 2,
     // Report AMD require and define calls
-    "import/no-nodejs-modules": 2,
+    "import/no-nodejs-modules": 0,
     // No Node.js builtin modules
 
     // Style guide
