@@ -6,7 +6,7 @@ import {Condition} from './condition';
 import {WaitCondition} from './wait-condition';
 
 const checkCondition = (selector, message, condition) =>
-    ActionUtil.expectExecutedAction(() => WaitCondition.check(selector, message, condition));
+    ActionUtil.expectExecutedAction(() => WaitCondition.check(message, condition, selector));
 
 const checkPresenceAndCondition = (selector, condition) => {
     const EC = protractor.ExpectedConditions;
@@ -62,7 +62,7 @@ export class Expectation {
      * @param value
      */
     static attributeContainsValue(selector, attrName, value) {
-        const condition = (actualValue) => R.gt(actualValue.indexOf(value), 1);
+        const condition = (actualValue) => R.gt(actualValue.indexOf(value), -1);
         return Expectation.attributeCondition(selector, attrName, condition);
     }
 

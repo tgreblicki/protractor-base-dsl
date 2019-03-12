@@ -10208,7 +10208,7 @@ xdg-basedir@^2.0.0:
   dependencies:
     os-homedir "^1.0.0"
 
-xl-html-dnd@^1.2.4:
+xl-html-dnd@1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/xl-html-dnd/-/xl-html-dnd-1.2.4.tgz#e320516e6704ed0be44cf33f64243d128792eefb"
   integrity sha512-lQqtDq1a/bdYdSOvkF2pTESTZlI2WF8zwI/eJ3RMYnVa4QtSWA2Yz5OkfaOxOKUeTnkedgDz+WM2sPjywJfJhQ==

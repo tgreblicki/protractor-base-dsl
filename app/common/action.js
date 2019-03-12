@@ -2,6 +2,7 @@ import R from 'ramda';
 import KeyCodes from 'keycode-js';
 import {code as dragAndDrop} from 'xl-html-dnd';
 import {Expectation} from './expectation';
+import {JQueryAction} from './jquery-action';
 import {ActionUtil} from './action-util';
 import {ElementUtil} from './element-util';
 
@@ -108,7 +109,7 @@ export class Action {
      * @param selector
      */
     static ctrlClick(selector) {
-        return Action.jQueryClick(selector, {ctrlKey: true});
+        return JQueryAction.click(selector, {ctrlKey: true});
     }
 
     /**
@@ -195,7 +196,7 @@ export class Action {
      * @param selector
      */
     static shiftClick(selector) {
-        return Action.jQueryClick(selector, {shiftKey: true});
+        return JQueryAction.click(selector, {shiftKey: true});
     }
 
     /**
