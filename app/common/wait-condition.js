@@ -42,7 +42,7 @@ export class WaitCondition {
      * @param expectedCount
      */
     static count(selector, expectedCount) {
-        const condition = Condition.elementCount(expectedCount, selector);
+        const condition = Condition.count(expectedCount, selector);
         return WaitCondition.check(`for element's count to be '${expectedCount}'`, condition);
     }
 
