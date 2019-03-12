@@ -10,17 +10,18 @@ export class Window {
      * Captures browser logs and saves it to a specified (by defined global variable) folder.
      */
     static captureBrowserLogs = () => {
+        const logsFolder = global.capturedBrowserLogsFolder || 'build/reports';
         browser.getCapabilities().then((capabilities) => {
             const browserName = capabilities.get('browserName');
             if (!R.equals(browserName, 'internet explorer') && !R.equals(browserName, 'firefox')) {
                 const logFileName = 'consoleErrors.txt';
-                const fullPath = `${(global.capturedBrowserLogsFolder || 'build/reports')}/${logFileName}`;
+                const fullPath = `${(logsFolder)}/${logFileName}`;
                 browser.manage().logs().get('browser')
                     .then((browserLog) => {
                         if (browserLog.length) {
-                            fs.exists(global.capturedBrowserLogsFolder, (exists) => {
+                            fs.exists(logsFolder, (exists) => {
                                 if (!exists) {
-                                    fs.mkdir(global.capturedBrowserLogsFolder, () => {
+                                    fs.mkdir(logsFolder, () => {
                                         fs.exists(fullPath, () => {
                                             const text = browserLog.map(JSON.stringify).join(';\n');
 
