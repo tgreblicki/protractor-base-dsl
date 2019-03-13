@@ -337,7 +337,7 @@ export class Expectation {
      */
     static textMatches(selector, regex) {
         const msg = `for element text to be matched by '${regex}'`;
-        return checkCondition(selector, msg, Condition.not(Condition.textMatches(regex)));
+        return checkCondition(selector, msg, Condition.textMatches(regex));
     }
 }
 
