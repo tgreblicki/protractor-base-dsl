@@ -80,7 +80,7 @@ export class Action {
      * @param selector
      */
     static clickEnter(selector) {
-        return Action.keyDown(selector, KeyCodes.KEY_RETURN);
+        return Action.keyPress(selector, KeyCodes.KEY_RETURN);
     }
 
     /**
@@ -89,7 +89,7 @@ export class Action {
      * @param selector
      */
     static clickEscape(selector) {
-        return Action.keyDown(selector, KeyCodes.KEY_ESCAPE);
+        return Action.keyPress(selector, KeyCodes.KEY_ESCAPE);
     }
 
     /**
@@ -187,6 +187,18 @@ export class Action {
     static keyDown = (selector, keyCode) => {
         const sendKey = (element, code) =>
             ReactTestUtils.Simulate.keyDown(element, {charCode: code, keyCode: code, which: code});
+        return Action.executeVoidScript(sendKey, ElementUtil.elementFinder(selector), keyCode);
+    };
+
+    /**
+     * Performs a custom keyPress event on a certain element.
+     *
+     * @param selector
+     * @param keyCode
+     */
+    static keyPress = (selector, keyCode) => {
+        const sendKey = (element, code) =>
+            ReactTestUtils.Simulate.keyPress(element, {charCode: code, keyCode: code, which: code});
         return Action.executeVoidScript(sendKey, ElementUtil.elementFinder(selector), keyCode);
     };
 
