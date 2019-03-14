@@ -3,12 +3,6 @@ import {ActionUtil} from './action-util';
 import {ElementUtil} from './element-util';
 import {Expectation} from './expectation';
 
-const simulate = (simulateFunction, selector) => {
-    const code = (element) =>
-        simulateFunction(element);
-    return Action.executeVoidScript(code, ElementUtil.elementFinder(selector));
-};
-
 /**
  * Base DSL actions for React components
  */
@@ -19,7 +13,10 @@ export class ReactAction {
      * @param selector
      */
     static blur(selector) {
-        return simulate(ReactTestUtils.Simulate.blur, selector);
+        function code(element) {
+            ReactTestUtils.Simulate.blur(element);
+        }
+        return Action.executeVoidScript(code, ElementUtil.elementFinder(selector));
     }
 
     /**
@@ -29,7 +26,10 @@ export class ReactAction {
      * @param selector
      */
     static focus(selector) {
-        return simulate(ReactTestUtils.Simulate.focus, selector);
+        function code(element) {
+            ReactTestUtils.Simulate.focus(element);
+        }
+        return Action.executeVoidScript(code, ElementUtil.elementFinder(selector));
     }
 
     /**
@@ -38,7 +38,10 @@ export class ReactAction {
      * @param selector
      */
     static mouseLeave(selector) {
-        return simulate(ReactTestUtils.Simulate.mouseLeave, selector);
+        function code(element) {
+            ReactTestUtils.Simulate.mouseLeave(element);
+        }
+        return Action.executeVoidScript(code, ElementUtil.elementFinder(selector));
     }
 
     /**

@@ -213,4 +213,14 @@ export class Action {
             }
         }
     }
+
+    /**
+     * Cleans previously typed text and fill in with a new value.
+     * @param selector
+     * @param text
+     */
+    static typeNewText = (selector, text) => {
+        Action.clearText(selector);
+        Action.typeText(selector, text);
+    }
 }
