@@ -169,17 +169,16 @@ export class Action {
      * @param toElement
      */
     static jsDragAndDrop(fromElement, toElement) {
-        Expectation.present(fromElement);
-        Expectation.present(toElement);
+        Expectation.displayed(fromElement);
+        Expectation.displayed(toElement);
 
         const draggedItem = ElementUtil.elementFinder(fromElement);
         const droppable = ElementUtil.elementFinder(toElement);
 
-        function script() {
+        const script = () =>
             browser.executeScript(dragAndDrop, draggedItem, droppable, 500);
-        }
 
-        Action.executeVoidScript(script);
+        ActionUtil.expectExecutedAction(script);
         browser.sleep(1500);
     }
 
