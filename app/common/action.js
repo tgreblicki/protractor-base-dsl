@@ -57,7 +57,8 @@ export class Action {
      */
     static click(selector) {
         Expectation.clickable(selector);
-        return ActionUtil.expectExecutedAction(() => ElementUtil.elementFinder(selector).click());
+        ActionUtil.expectExecutedAction(() => ElementUtil.elementFinder(selector).click());
+        browser.sleep(500);
     }
 
     /**
@@ -71,7 +72,7 @@ export class Action {
      */
     static clickIfClickable(selector) {
         const finder = ElementUtil.elementFinder(selector);
-        return expect(ActionUtil.execute(() => finder.click().then(R.T, R.T)));
+        return expect(ActionUtil.execute(() => finder.click().then(R.F, R.F)));
     }
 
     /**
@@ -173,7 +174,11 @@ export class Action {
 
         const draggedItem = ElementUtil.elementFinder(fromElement);
         const droppable = ElementUtil.elementFinder(toElement);
-        const script = () => browser.executeScript(dragAndDrop, draggedItem, droppable, 500);
+
+        function script() {
+            browser.executeScript(dragAndDrop, draggedItem, droppable, 500);
+        }
+
         Action.executeVoidScript(script);
         browser.sleep(1500);
     }
