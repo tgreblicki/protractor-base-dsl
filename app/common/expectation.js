@@ -148,11 +148,12 @@ export class Expectation {
      *
      * @param selector
      * @param dateValue
+     * @param defaultDateFormat
      */
-    static dateValue(selector, dateValue) {
+    static dateValue(selector, dateValue, defaultDateFormat) {
         const expectationFunction = (dateFormat) =>
             Expectation.attributeEquals(selector, 'value', dateValue.format(dateFormat));
-        return Expectation.withLocaleDate(expectationFunction);
+        return Expectation.withLocaleDate(expectationFunction, defaultDateFormat);
     }
 
     /**
@@ -253,12 +254,12 @@ export class Expectation {
      * @param expectationFunction
      * @param defaultDateFormat
      */
-    static withLocaleDate(expectationFunction, defaultDateFormat) {
-        return ActionUtil.expectExecutedAction(() => {
+    static withLocaleDate(expectationFunction, defaultDateFormat = 'MMM D, YYYY') {
+        return ActionUtil.expectExecutedAction(() =>
             browser.executeScript(() =>
                 R.path(['languages', 'length'], navigator) ? navigator.languages[0] : navigator.userLanguage
-            ).then(() => defaultDateFormat).then((dateFormat) => expectationFunction(dateFormat));
-        });
+            ).then(() => defaultDateFormat).then((dateFormat) => expectationFunction(dateFormat))
+        );
     }
 
     /**

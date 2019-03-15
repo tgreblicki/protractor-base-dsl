@@ -152,7 +152,7 @@ export class Action {
      * @param {Object} selector CSS Selector or Protractor Element
      */
     static jsClick(selector) {
-        Expectation.present(selector);
+        Expectation.displayed(selector);
         Expectation.clickable(selector);
 
         function clickIt() {
