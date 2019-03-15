@@ -59,7 +59,7 @@ export class ReactAction {
             Action.executeVoidScript(setDate, ElementUtil.elementFinder(selector), dateValue.format(dateFormat));
         Expectation.withLocaleDate(expectationFunction);
 
-        ReactAction.reactFocus(selector);
+        ReactAction.focus(selector);
         Expectation.displayed(selectedDateSelector);
 
         const action = () => Action.click(selectedDateSelector);

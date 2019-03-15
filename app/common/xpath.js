@@ -8,7 +8,7 @@ export class XPath {
      * @param text
      */
     static buttonContains(text) {
-        return By.xpath(`.//button[text() = ${text}']`);
+        return By.xpath(`.//button[text() = '${text}']`);
     }
 
     /**
@@ -64,6 +64,15 @@ export class XPath {
      */
     static spanContains(text) {
         return By.xpath(`.//span[text() = '${text}']`);
+    }
+
+    /**
+     * Selector to find strong element containing a provided text.
+     *
+     * @param text
+     */
+    static strongContains(text) {
+        return By.xpath(`.//strong[text() = '${text}']`);
     }
 
     /**
@@ -140,5 +149,16 @@ export class XPath {
      */
     static withParagraphContains(selector, text) {
         return element(By.css(selector)).element(XPath.paragraphContains(text));
+    }
+
+    /**
+     * Selector to find a strong element containing a provided text inside
+     * already found element by an additional selector.
+     *
+     * @param selector
+     * @param text
+     */
+    static withStrongContains(selector, text) {
+        return element(By.css(selector)).element(XPath.strongContains(text));
     }
 }
