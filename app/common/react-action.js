@@ -2,6 +2,7 @@ import {Action} from './action';
 import {ActionUtil} from './action-util';
 import {ElementUtil} from './element-util';
 import {Expectation} from './expectation';
+import {WaitCondition} from './wait-condition';
 
 /**
  * Base DSL actions for React components
@@ -63,7 +64,7 @@ export class ReactAction {
         Expectation.displayed(selectedDateSelector);
 
         const action = () => Action.click(selectedDateSelector);
-        const condition = () => Expectation.notPresent(selectedDateSelector);
+        const condition = () => WaitCondition.notPresent(selectedDateSelector);
         ActionUtil.repeatAction(action, condition);
 
         ReactAction.blur(selector);
