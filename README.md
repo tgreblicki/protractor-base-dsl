@@ -10,3 +10,5 @@ Used global variables:
 |defaultExpectationTimeout|10000|Timeout to wait (in ms) a condition|
 |defaultBrowserWidth|1024|Default width of browser to set before running Protractor tests|
 |defaultBrowserHeight|768|Default height of browser to set before running Protractor tests|
+
+Check [Base DSL API](https://acierto.github.io/protractor-base-dsl/) for more information
