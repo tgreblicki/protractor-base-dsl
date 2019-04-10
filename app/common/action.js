@@ -57,7 +57,11 @@ export class Action {
      */
     static click(selector) {
         Expectation.clickable(selector);
-        ActionUtil.expectExecutedAction(() => ElementUtil.elementFinder(selector).click());
+
+        browser.executeScript('window.scrollTo(0,0);').then(() => {
+            ActionUtil.expectExecutedAction(() => ElementUtil.elementFinder(selector).click());
+        });
+
         browser.sleep(500);
     }
 
@@ -238,15 +242,5 @@ export class Action {
     static typeNewText = (selector, text) => {
         Action.clearText(selector);
         Action.typeText(selector, text);
-    };
-
-    /**
-     * Scrolls to an element.
-     * After that the browser will be focusing the element.
-     *
-     * @param selector
-     */
-    static scrollToElement = (selector) => {
-        browser.actions().mouseMove(ElementUtil.elementFinder(selector)).perform();
     };
 }
