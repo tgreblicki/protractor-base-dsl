@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>react-action.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -31,67 +31,92 @@
 
 <div id="main">
     
+    <h1 class="page-title">react-action.js</h1>
+    
 
     
 
 
 
     
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {Action} from './action';
+import {ActionUtil} from './action-util';
+import {ElementUtil} from './element-util';
+import {Expectation} from './expectation';
+import {WaitCondition} from './wait-condition';
 
+/**
+ * Base DSL actions for React components
+ */
+export class ReactAction {
+    /**
+     * Leaves the focus from the React element.
+     *
+     * @param selector
+     */
+    static blur(selector) {
+        function code(element) {
+            ReactTestUtils.Simulate.blur(element);
+        }
+        return Action.executeVoidScript(code, ElementUtil.elementFinder(selector));
+    }
 
-    <section class="package">
-        <h3> </h3>		
+    /**
+     * Focuses on a certain React element.
+     * Mainly has to be used for input fields.
+     *
+     * @param selector
+     */
+    static focus(selector) {
+        function code(element) {
+            ReactTestUtils.Simulate.focus(element);
+        }
+        return Action.executeVoidScript(code, ElementUtil.elementFinder(selector));
+    }
+
+    /**
+     * Leaves the hover from the React component.
+     *
+     * @param selector
+     */
+    static mouseLeave(selector) {
+        function code(element) {
+            ReactTestUtils.Simulate.mouseLeave(element);
+        }
+        return Action.executeVoidScript(code, ElementUtil.elementFinder(selector));
+    }
+
+    /**
+     * Sets the specified date in date picker.
+     *
+     * @param selector
+     * @param dateValue
+     */
+    static setDatePickerValue(selector, dateValue) {
+        const selectedDateSelector = '.react-datepicker__day--selected';
+        const setDate = (element, value) =>
+            ReactTestUtils.Simulate.change(element, {target: {value}});
+
+        const expectationFunction = (dateFormat) =>
+            Action.executeVoidScript(setDate, ElementUtil.elementFinder(selector), dateValue.format(dateFormat));
+        Expectation.withLocaleDate(expectationFunction);
+
+        ReactAction.focus(selector);
+        Expectation.displayed(selectedDateSelector);
+
+        const action = () => Action.click(selectedDateSelector);
+        const condition = () => WaitCondition.notPresent(selectedDateSelector);
+        ActionUtil.repeatAction(action, condition);
+
+        ReactAction.blur(selector);
+        ReactAction.mouseLeave(selector);
+    }
+}
+</code></pre>
+        </article>
     </section>
-
-
-
-
-
-
-
-
-
-    
-
-
-
-    <section class="readme">
-        <article><h1>Protractor Base DSL</h1><p>This library will help you with providing base DSL classes to lessen the burden of creating protractor scenarios.</p>
-<p>Used global variables: </p>
-<table>
-<thead>
-<tr>
-<th>name</th>
-<th>default value</th>
-<th>description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>defaultExpectationTimeout</td>
-<td>10000</td>
-<td>Timeout to wait (in ms) a condition</td>
-</tr>
-<tr>
-<td>defaultBrowserWidth</td>
-<td>1024</td>
-<td>Default width of browser to set before running Protractor tests</td>
-</tr>
-<tr>
-<td>defaultBrowserHeight</td>
-<td>768</td>
-<td>Default height of browser to set before running Protractor tests</td>
-</tr>
-</tbody>
-</table>
-<h1>For maintainers</h1><p>To build a new version:</p>
-<p><code>gulp build-dist</code></p>
-<p>To release a new version:</p>
-<p><code>gulp complete-release</code></p>
-<p>Check <a href="https://acierto.github.io/protractor-base-dsl/">Base DSL API</a> for more information</p></article>
-    </section>
-
-
 
 
 
