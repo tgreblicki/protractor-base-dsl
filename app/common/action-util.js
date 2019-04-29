@@ -70,9 +70,25 @@ export class ActionUtil {
     static repeatAction(action, condition) {
         const callerStack = createCallerStack();
         const retry = (current, max) => {
-            action();
+            ActionUtil.expectExecutedAction(action);
             return condition().then(Q.resolve, (error) => processError(retry, callerStack, error, current, max));
         };
         return retry(1, maxRetries);
+    }
+
+    /**
+     * Executes the same action N times with a timeout between actions.
+     * This method is required when you can't apply any condition to be sure that action was occurred, but you
+     * find some piece of code quite flaky in Protractor and once in a while this action is not happening.
+     *
+     * @param action
+     * @param timesToExecute
+     * @param timeout
+     */
+    static times(action, timesToExecute, timeout = delayTime) {
+        R.forEach(() => {
+            ActionUtil.expectExecutedAction(action);
+            browser.sleep(timeout);
+        }, R.range(0, timesToExecute));
     }
 }
