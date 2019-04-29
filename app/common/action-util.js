@@ -70,7 +70,7 @@ export class ActionUtil {
     static repeatAction(action, condition) {
         const callerStack = createCallerStack();
         const retry = (current, max) => {
-            ActionUtil.expectExecutedAction(action);
+            action();
             return condition().then(Q.resolve, (error) => processError(retry, callerStack, error, current, max));
         };
         return retry(1, maxRetries);
@@ -87,7 +87,7 @@ export class ActionUtil {
      */
     static times(action, timesToExecute, timeout = delayTime) {
         R.forEach(() => {
-            ActionUtil.expectExecutedAction(action);
+            action();
             browser.sleep(timeout);
         }, R.range(0, timesToExecute));
     }
