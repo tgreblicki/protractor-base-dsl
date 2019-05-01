@@ -55,6 +55,23 @@ export class Expectation {
     }
 
     /**
+     * Checks that attribute doesn't have specified text.
+     *
+     * @param selector
+     * @param attribute
+     * @param text
+     */
+    static attributeNotEqual(selector, attribute, text) {
+        const elementFinder = ElementUtil.elementFinder(selector);
+        const textIs = () =>
+            elementFinder.getAttribute(attribute).then(
+                (actualText) => !R.equals(R.trim(actualText), R.trim(text))
+            );
+
+        return checkPresenceAndCondition(selector, textIs);
+    }
+
+    /**
      * Checks that attribute value contains an expected text.
      *
      * @param selector
