@@ -5,6 +5,7 @@ import {Expectation} from './expectation';
 import {JQueryAction} from './jquery-action';
 import {ActionUtil} from './action-util';
 import {ElementUtil} from './element-util';
+import {WaitCondition} from './wait-condition';
 
 const bulkOfClicks = (action, selectors) => {
     for (const selector of selectors) {
@@ -41,12 +42,13 @@ export class Action {
      */
     static clearText(selector) {
         const element = ElementUtil.elementFinder(selector);
-        element.getAttribute('value').then((value) => {
+        const action = () => element.getAttribute('value').then((value) => {
             if (value) {
                 R.times(() => element.sendKeys(protractor.Key.BACK_SPACE), value.length);
             }
         });
-        return Expectation.emptyText(selector);
+        const condition = () => WaitCondition.textEquals(selector, '');
+        ActionUtil.repeatAction(action, condition);
     }
 
     /**
