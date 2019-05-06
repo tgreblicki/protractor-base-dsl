@@ -173,8 +173,9 @@ export class Action {
      *
      * @param fromElement
      * @param toElement
+     * @param waitBeforeDropping time to wait between drag and dropping the element
      */
-    static jsDragAndDrop(fromElement, toElement) {
+    static jsDragAndDrop(fromElement, toElement, waitBeforeDropping = 500) {
         Expectation.displayed(fromElement);
         Expectation.displayed(toElement);
 
@@ -182,7 +183,7 @@ export class Action {
         const droppable = ElementUtil.elementFinder(toElement);
 
         const script = () =>
-            browser.executeScript(dragAndDrop, draggedItem, droppable, 500);
+            browser.executeScript(dragAndDrop, draggedItem, droppable, waitBeforeDropping);
 
         ActionUtil.expectExecutedAction(script);
         browser.sleep(1500);

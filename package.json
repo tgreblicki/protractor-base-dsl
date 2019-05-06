@@ -28,6 +28,10 @@
     "@babel/plugin-syntax-import-meta": "7.2.0",
     "@babel/preset-env": "7.2.0",
     "@babel/register": "7.0.0",
+    "@storybook/addon-actions": "5.0.11",
+    "@storybook/addon-links": "5.0.11",
+    "@storybook/addons": "5.0.11",
+    "@storybook/react": "5.0.11",
     "archiver": "3.0.0",
     "ascii-table": "0.0.9",
     "autoprefixer": "9.4.2",
@@ -36,7 +40,7 @@
     "babel-loader": "8.0.4",
     "babel-plugin-ramda": "1.6.3",
     "babel-plugin-root-import": "6.1.0",
-    "bean": "^1.0.15",
+    "bean": "1.0.15",
     "body-parser": "1.18.3",
     "browser-unhandled-rejection": "1.0.2",
     "console-error-throws-error": "1.2.1",
@@ -84,9 +88,11 @@
     "phantomjs-prebuilt": "2.1.16",
     "pretty-error": "2.1.1",
     "progress-bar-webpack-plugin": "1.11.0",
+    "protractor-base-dsl": "0.0.33",
     "protractor-jasmine2-html-reporter": "0.0.7",
     "protractor-screenshot-reporter": "0.0.5",
     "q": "1.5.1",
+    "reactstrap": "8.0.0",
     "require-dir": "1.2.0",
     "rimraf": "2.6.2",
     "selenium-webdriver": "3.6.0",
@@ -140,5 +146,9 @@
     "notify": true,
     "setupTestFrameworkScriptFile": "<rootDir>/src/test/javascript/jasmine.conf.js",
     "verbose": true
+  },
+  "scripts": {
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   }
 }
