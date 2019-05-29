@@ -243,6 +243,7 @@ export class Action {
      * @param text
      */
     static typeNewText = (selector, text) => {
+        Action.click(ElementUtil.elementFinder(selector));
         Action.clearText(selector);
         Action.typeText(selector, text);
     };
