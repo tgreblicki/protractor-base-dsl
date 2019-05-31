@@ -1,3 +1,4 @@
+import R from 'ramda';
 import webdriver from 'selenium-webdriver/lib/webdriver';
 import {Condition} from './condition';
 import {ElementUtil} from './element-util';
@@ -103,6 +104,22 @@ export class WaitCondition {
     }
 
     /**
+     * Checks that element containing a specified text is present.
+     *
+     * @param selector
+     * @param expectedText
+     */
+    static presentWithText(selector, expectedText) {
+        const foundElement = element.all(By.css(selector))
+            .filter((elem) =>
+                elem.getText()
+                    .then((actualText) => R.equals(actualText, expectedText)))
+            .first();
+        const msg = `For element having text ${expectedText} to be present`;
+        return WaitCondition.check(msg, Condition.present, foundElement);
+    }
+
+    /**
      * Waiting for element contains a certain text chunk.
      *
      * @param selector
@@ -110,7 +127,11 @@ export class WaitCondition {
      */
     static textContains(selector, text) {
         const condition = Condition.textContains(text);
-        return WaitCondition.check(`for element's text to contain '${text}'`, condition, selector);
+        return WaitCondition.check(`
+    for
+    element
+    's text to contain '${text}
+    '`, condition, selector);
     }
 
     /**

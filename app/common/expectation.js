@@ -307,6 +307,15 @@ export class Expectation {
     }
 
     /**
+     * Checks that element containing a specified text is present.
+     *
+     * @param selector
+     */
+    static presentWithText(selector) {
+        return ActionUtil.expectExecutedAction(() => WaitCondition.presentWithText(selector));
+    }
+
+    /**
      * Checks that element has readonly attribute.
      *
      * @param selector
