@@ -231,7 +231,7 @@ export class Action {
     static typeText(selector, text) {
         if (text) {
             Action.click(ElementUtil.elementFinder(selector));
-            for (const chars of text.match(/.{1,10}/g)) {
+            for (const chars of text.split('')) {
                 ElementUtil.elementFinder(selector).sendKeys(chars);
             }
         }
