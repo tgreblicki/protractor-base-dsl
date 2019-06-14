@@ -41,12 +41,20 @@ export class Action {
      * @param selector
      */
     static clearText(selector) {
-        const element = ElementUtil.elementFinder(selector);
-        const action = () => element.getAttribute('value').then((value) => {
-            if (value) {
-                R.times(() => element.sendKeys(protractor.Key.BACK_SPACE), value.length);
-            }
-        });
+        const action = () => {
+            ElementUtil.elementFinder(selector).isSelected().then((selected) => {
+                if (!selected) {
+                    Action.click(ElementUtil.elementFinder(selector));
+                }
+
+                ElementUtil.elementFinder(selector).getAttribute('value').then((value) => {
+                    if (value) {
+                        R.times(() => ElementUtil.elementFinder(selector)
+                            .sendKeys(protractor.Key.BACK_SPACE), value.length);
+                    }
+                });
+            });
+        };
         const condition = () => WaitCondition.textEquals(selector, '');
         ActionUtil.repeatAction(action, condition);
     }
@@ -243,7 +251,6 @@ export class Action {
      * @param text
      */
     static typeNewText = (selector, text) => {
-        Action.click(ElementUtil.elementFinder(selector));
         Action.clearText(selector);
         Action.typeText(selector, text);
     };
