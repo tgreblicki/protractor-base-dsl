@@ -12,7 +12,7 @@ export class Click {
      * @param clickSelector
      * @param displayedSelector
      */
-    andExpectDisplayed(clickSelector, displayedSelector) {
+    static andExpectDisplayed(clickSelector, displayedSelector) {
         const action = () => Action.click(clickSelector);
         const condition = () => WaitCondition.displayed(displayedSelector);
         ActionUtil.repeatAction(action, condition);
