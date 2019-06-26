@@ -1,5 +1,6 @@
 export {Action} from './common/action';
 export {ActionUtil} from './common/action-util';
+export {Click} from './common/click';
 export {Condition} from './common/condition';
 export {Expectation} from './common/expectation';
 export {ElementUtil} from './common/element-util';
