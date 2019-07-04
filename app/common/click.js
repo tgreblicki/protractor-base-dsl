@@ -7,7 +7,7 @@ import {WaitCondition} from './wait-condition';
  */
 export class Click {
     /**
-     *  Click on the element and expects it to be displayed
+     *  Click on the element and expects that affected element to be displayed
      *
      * @param clickSelector
      * @param displayedSelector
@@ -15,6 +15,18 @@ export class Click {
     static andExpectDisplayed(clickSelector, displayedSelector) {
         const action = () => Action.click(clickSelector);
         const condition = () => WaitCondition.displayed(displayedSelector);
+        ActionUtil.repeatAction(action, condition);
+    }
+
+    /**
+     *  Click on the element and expects that affected element to be not displayed
+     *
+     * @param clickSelector
+     * @param displayedSelector
+     */
+    static andExpectNotDisplayed(clickSelector, displayedSelector) {
+        const action = () => Action.click(clickSelector);
+        const condition = () => WaitCondition.notDisplayed(displayedSelector);
         ActionUtil.repeatAction(action, condition);
     }
 }
