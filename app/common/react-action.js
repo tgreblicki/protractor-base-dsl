@@ -50,8 +50,10 @@ export class ReactAction {
      *
      * @param selector
      * @param dateValue
+     * @param blurAction a function if specified to be executed before focusing back to a component. That's required
+     * to apply the value.
      */
-    static setDatePickerValue(selector, dateValue) {
+    static setDatePickerValue(selector, dateValue, blurAction) {
         const selectedDateSelector = '.react-datepicker__day--selected';
         const setDate = (element, value) =>
             ReactTestUtils.Simulate.change(element, {target: {value}});
@@ -60,6 +62,9 @@ export class ReactAction {
             Action.executeVoidScript(setDate, ElementUtil.elementFinder(selector), dateValue.format(dateFormat));
         Expectation.withLocaleDate(expectationFunction);
 
+        if (blurAction) {
+            blurAction();
+        }
         ReactAction.focus(selector);
         Expectation.displayed(selectedDateSelector);
 
