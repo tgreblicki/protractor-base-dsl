@@ -10901,7 +10901,7 @@ proto-list@~1.2.1:
   resolved "https://registry.yarnpkg.com/proto-list/-/proto-list-1.2.4.tgz#212d5bfe1318306a420f6402b8e26ff39647a849"
   integrity sha1-IS1b/hMYMGpCD2QCuOJv85ZHqEk=
 
-protractor-base-dsl@^0.0.33:
+protractor-base-dsl@0.0.33:
   version "0.0.33"
   resolved "https://registry.yarnpkg.com/protractor-base-dsl/-/protractor-base-dsl-0.0.33.tgz#82a55f5385abc96f912c42e9232861fab296adc2"
   integrity sha512-hjcU5JJBnuMzOQCQq9VaYlNxfova86QcM++NhZZhihOP6dioSrCuQhD/1b6ohiCFeDj4WtWvI3H/cYf/bDkVhg==

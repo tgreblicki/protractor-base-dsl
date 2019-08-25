@@ -243,6 +243,7 @@ export class Action {
                 ElementUtil.elementFinder(selector).sendKeys(chars);
             }
         }
+        browser.sleep(200);
     }
 
     /**
@@ -253,5 +254,6 @@ export class Action {
     static typeNewText = (selector, text) => {
         Action.clearText(selector);
         Action.typeText(selector, text);
+        browser.sleep(200);
     };
 }
