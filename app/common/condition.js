@@ -139,6 +139,7 @@ export class Condition {
      */
     static textEquals(text) {
         let times = 1;
+        const prepareText = (str = '') => str.trim();
 
         const compareText = (finder) => () => Condition.getText(finder).then(
             (elText) => {
@@ -146,7 +147,7 @@ export class Condition {
                     log.warn('Expected that ', elText, ' be equal to: ', text, ' tries: ', times);
                 }
                 times += 1;
-                return R.equals(elText, text);
+                return R.equals(prepareText(elText), prepareText(text));
             }
         );
 
