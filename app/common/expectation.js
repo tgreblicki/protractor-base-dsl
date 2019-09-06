@@ -84,6 +84,18 @@ export class Expectation {
     }
 
     /**
+     * Checks that attribute does not contain a specified value in a certain text.
+     *
+     * @param selector
+     * @param attrName
+     * @param value
+     */
+    static attributeDoesntContainValue(selector, attrName, value) {
+        const condition = (actualValue) => R.equals(actualValue.indexOf(value), -1);
+        return Expectation.attributeCondition(selector, attrName, condition);
+    }
+
+    /**
      * Checks that attribute value is not less than a specified value.
      *
      * @param selector
