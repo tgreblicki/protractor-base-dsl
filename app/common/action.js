@@ -252,8 +252,12 @@ export class Action {
      * @param text
      */
     static typeNewText = (selector, text) => {
-        Action.clearText(selector);
-        Action.typeText(selector, text);
-        browser.sleep(200);
+        const action = () => {
+            Action.clearText(selector);
+            Action.typeText(selector, text);
+            browser.sleep(200);
+        };
+        const condition = () => WaitCondition.textEquals(selector, text);
+        ActionUtil.repeatAction(action, condition);
     };
 }
