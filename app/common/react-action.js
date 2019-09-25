@@ -46,6 +46,18 @@ export class ReactAction {
     }
 
     /**
+     * Hovers the specified React component.
+     *
+     * @param selector
+     */
+    static mouseMove(selector) {
+        function code(element) {
+            ReactTestUtils.Simulate.mouseMove(element);
+        }
+        return Action.executeVoidScript(code, ElementUtil.elementFinder(selector));
+    }
+
+    /**
      * Sets the specified date in date picker.
      *
      * @param selector

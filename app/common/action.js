@@ -118,6 +118,13 @@ export class Action {
         return Action.executeVoidScript(doubleClick, ElementUtil.elementFinder(selector));
     }
 
+    static specialClick(selector) {
+        Expectation.displayed(selector);
+        const sendKey = (element) =>
+            ReactTestUtils.Simulate.click(element);
+        return Action.executeVoidScript(sendKey, ElementUtil.elementFinder(selector));
+    }
+
     /**
      * Performs Ctrl click on a certain element.
      *
@@ -150,13 +157,24 @@ export class Action {
     }
 
     /**
-     * Hovers on a certain element.
+     * Hovers on a certain element by mousing over the specified element.
      *
      * @param selector
      */
     static hover(selector) {
         Expectation.displayed(selector);
         const hover = (element) => bean.fire(element, 'mouseover');
+        Action.executeVoidScript(hover, ElementUtil.elementFinder(selector));
+    }
+
+    /**
+     * Hovers on a certain element by mousing move to an element
+     *
+     * @param selector
+     */
+    static mousemove(selector) {
+        Expectation.displayed(selector);
+        const hover = (element) => bean.fire(element, 'mousemove');
         Action.executeVoidScript(hover, ElementUtil.elementFinder(selector));
     }
 
