@@ -85,7 +85,7 @@ export class Condition {
         return finder.getAttribute('type').then((tagType) => {
             if (R.equals(tagType, 'checkbox')) {
                 return finder.getAttribute('checked').then((checked) => R.toString(R.equals(checked, 'true')));
-            } else if (R.equals(tagType, 'text')) {
+            } else if (R.equals(tagType, 'text') || R.equals(tagType, 'password')) {
                 return finder.getAttribute('value');
             }
             return finder.getText();
