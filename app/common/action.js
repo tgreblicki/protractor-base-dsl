@@ -270,10 +270,11 @@ export class Action {
      * Cleans previously typed text and fill in with a new value.
      * @param selector
      * @param text
+     * @param sleep, sleep time (ms) between typing the characters
      */
-    static typeNewText = (selector, text) => {
+    static typeNewText = (selector, text, sleep) => {
         Action.click(ElementUtil.elementFinder(selector));
         Action.clearText(selector);
-        Action.typeText(selector, text);
+        Action.typeText(selector, text, sleep);
     };
 }
