@@ -3,7 +3,7 @@
   "description": "Protractor base DSL",
   "name": "protractor-base-dsl",
   "main": "dist/index.js",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "repository": {
     "type": "git",
     "url": "git@github.com:acierto/protractor-base-dsl.git"
