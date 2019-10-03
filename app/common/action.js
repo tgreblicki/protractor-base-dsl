@@ -253,12 +253,14 @@ export class Action {
      *
      * @param selector
      * @param text
+     * @param sleep, sleep time (ms) between typing the characters
      */
-    static typeText(selector, text) {
+    static typeText(selector, text, sleep = 100) {
         if (text) {
             Action.click(ElementUtil.elementFinder(selector));
             for (const chars of text.split('')) {
                 ElementUtil.elementFinder(selector).sendKeys(chars);
+                browser.sleep(sleep);
             }
         }
         browser.sleep(200);
@@ -270,12 +272,8 @@ export class Action {
      * @param text
      */
     static typeNewText = (selector, text) => {
-        const action = () => {
-            Action.clearText(selector);
-            Action.typeText(selector, text);
-            browser.sleep(200);
-        };
-        const condition = () => WaitCondition.textEquals(selector, text);
-        ActionUtil.repeatAction(action, condition);
+        Action.click(ElementUtil.elementFinder(selector));
+        Action.clearText(selector);
+        Action.typeText(selector, text);
     };
 }
