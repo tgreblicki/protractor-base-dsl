@@ -1,6 +1,7 @@
 import fs from 'fs';
 import R from 'ramda';
 import log from 'loglevel';
+import {ActionUtil} from './action-util';
 
 /**
  * Manages the window settings.
@@ -52,7 +53,7 @@ export class Window {
      * Set the default window size.
      */
     static setDefaultSize = () =>
-        browser.manage().window().setSize(
+        Window.setSize(
             global.defaultBrowserWidth || 768,
             global.defaultBrowserHeight || 1024
         );
@@ -63,8 +64,11 @@ export class Window {
      * @param width
      * @param height
      */
-    static setSize = (width, height) =>
-        browser.manage().window().setSize(width, height);
+    static setSize = (width, height) => {
+        const resize = (windowWidth, windowHeight) =>
+            window.resizeTo(windowWidth, windowHeight);
+        ActionUtil.execute(() => browser.executeScript(resize, width, height));
+    };
 
     /**
      * Refreshes the window content.
