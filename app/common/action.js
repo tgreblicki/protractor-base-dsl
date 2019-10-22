@@ -191,7 +191,8 @@ export class Action {
             arguments[0].click(); // eslint-disable-line prefer-rest-params
         }
 
-        return Action.executeVoidScript(clickIt, ElementUtil.elementFinder(selector));
+        Action.executeVoidScript(clickIt, ElementUtil.elementFinder(selector));
+        browser.sleep(500);
     }
 
     /**
