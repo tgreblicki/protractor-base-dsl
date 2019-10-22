@@ -63,16 +63,17 @@ export class Action {
      * Clicks on element if it's clickable.
      * For example button can be disabled and click won't occur, you need to fetch that unaccepted behavior earlier.
      *
-     * @param {Object} selector CSS Selector or Protractor Element
+     * @param selector CSS Selector or Protractor Element
+     * @param delay Delays on specified time before proceeding further.
      */
-    static click(selector) {
+    static click(selector, delay) {
         Expectation.clickable(selector);
 
         browser.executeScript('window.scrollTo(0,0);').then(() => {
             ActionUtil.expectExecutedAction(() => ElementUtil.elementFinder(selector).click());
         });
 
-        browser.sleep(500);
+        browser.sleep(delay);
     }
 
     /**
@@ -82,11 +83,14 @@ export class Action {
      * that period of time. For example it can be used to close timed notification messages to proceed further,
      * as toastr might hide some elements which you want to click.
      *
-     * @param {Object} selector CSS Selector or Protractor Element
+     * @param selector CSS Selector or Protractor Element
+     * @param delay Delays on specified time before proceeding further.
      */
-    static clickIfClickable(selector) {
+    static clickIfClickable(selector, delay) {
         const finder = ElementUtil.elementFinder(selector);
-        return expect(ActionUtil.execute(() => finder.click().then(R.F, R.F)));
+        expect(ActionUtil.execute(() => finder.click().then(R.F, R.F)));
+
+        browser.sleep(delay);
     }
 
     /**
@@ -181,9 +185,10 @@ export class Action {
     /**
      * Clicks on element by using native JavaScript execution.
      *
-     * @param {Object} selector CSS Selector or Protractor Element
+     * @param selector CSS Selector or Protractor Element
+     * @param delay Delays on specified time before proceeding further.
      */
-    static jsClick(selector) {
+    static jsClick(selector, delay = 500) {
         Expectation.displayed(selector);
         Expectation.clickable(selector);
 
@@ -192,7 +197,7 @@ export class Action {
         }
 
         Action.executeVoidScript(clickIt, ElementUtil.elementFinder(selector));
-        browser.sleep(500);
+        browser.sleep(delay);
     }
 
     /**
