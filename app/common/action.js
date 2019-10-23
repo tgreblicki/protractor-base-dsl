@@ -66,7 +66,7 @@ export class Action {
      * @param selector CSS Selector or Protractor Element
      * @param delay Delays on specified time before proceeding further.
      */
-    static click(selector, delay) {
+    static click(selector, delay = 500) {
         Expectation.clickable(selector);
 
         browser.executeScript('window.scrollTo(0,0);').then(() => {
@@ -86,7 +86,7 @@ export class Action {
      * @param selector CSS Selector or Protractor Element
      * @param delay Delays on specified time before proceeding further.
      */
-    static clickIfClickable(selector, delay) {
+    static clickIfClickable(selector, delay = 500) {
         const finder = ElementUtil.elementFinder(selector);
         expect(ActionUtil.execute(() => finder.click().then(R.F, R.F)));
 
