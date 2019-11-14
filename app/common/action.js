@@ -1,3 +1,4 @@
+// eslint-disable-line max-lines
 import R from 'ramda';
 import KeyCodes from 'keycode-js';
 import {code as dragAndDrop} from 'xl-html-dnd';
