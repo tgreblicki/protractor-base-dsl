@@ -255,6 +255,23 @@ export class Action {
     }
 
     /**
+     * Switches to the specified frame.
+     *
+     * @param selector
+     */
+    static switchToFrame(selector) {
+        browser.switchTo().frame(browser.driver.findElement(protractor.By.css(selector)));
+    }
+
+    /**
+     * Switches back to default content.
+     * For example when you selected the frame and need to get out from it.
+     */
+    static switchToDefaultContent() {
+        browser.switchTo().defaultContent();
+    }
+
+    /**
      * Types a text into a specified element.
      *
      * @param selector
