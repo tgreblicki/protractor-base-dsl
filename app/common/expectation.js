@@ -364,7 +364,7 @@ export class Expectation {
      * @param text
      */
     static textNotEqual(selector, text) {
-        const msg = `for element's text not to be '${text}'`;
+        const msg = `for element's text not to be ${text}`;
         return checkCondition(selector, msg, Condition.not(Condition.textEquals(text)));
     }
 

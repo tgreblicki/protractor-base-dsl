@@ -16,7 +16,7 @@ export class Window {
             const browserName = capabilities.get('browserName');
             if (!R.equals(browserName, 'internet explorer') && !R.equals(browserName, 'firefox')) {
                 const logFileName = 'consoleErrors.txt';
-                const fullPath = `${(logsFolder)}/${logFileName}`;
+                const fullPath = `${logsFolder}/${logFileName}`;
                 browser.manage().logs().get('browser')
                     .then((browserLog) => {
                         if (browserLog.length) {

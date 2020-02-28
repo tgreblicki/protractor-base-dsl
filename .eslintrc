@@ -12,7 +12,6 @@
       "destructuring": true,
       "forOf": true,
       "generators": true,
-      "legacyDecorators": true,
       "modules": true,
       "objectLiteralComputedProperties": true,
       "objectLiteralDuplicateProperties": true,
@@ -26,7 +25,8 @@
       "templateStrings": true,
       "unicodeCodePointEscapes": true,
       "globalReturn": true,
-      "jsx": true
+      "jsx": true,
+      "legacyDecorators": true
     }
   },
   "settings": {
@@ -163,6 +163,8 @@
     // disallow control flow statements in finally blocks
     "use-isnan": 2,
     // disallow comparisons with the value NaN
+    "valid-jsdoc": 0,
+    // Ensure JSDoc comments are valid (off by default)
     "valid-typeof": 2,
     // Ensure that the results of typeof are compared against a valid string
 
@@ -245,7 +247,7 @@
     // disallow magic numbers
     "no-multi-spaces": 2,
     // disallow use of multiple spaces
-    "no-multi-str": 2,
+    "no-multi-str": 0,
     // disallow use of multiline strings
     "no-native-reassign": 2,
     // disallow reassignments of native objects
@@ -305,7 +307,6 @@
         "natural": false
       }
     ],
-    // require object keys to be sorted
     "vars-on-top": 2,
     // requires to declare all vars on top of their containing scope (off by default)
     "wrap-iife": 2,
@@ -408,7 +409,7 @@
     // require or disallow padding inside computed properties (off by default)
     "consistent-this": 2,
     // enforces consistent naming when capturing the current execution context (off by default)
-    "eol-last": 0,
+    "eol-last": 2,
     // enforce newline at the end of file, with no multiple empty lines
     "func-names": [
       2,
@@ -471,7 +472,7 @@
     "max-depth": [
       2,
       {
-        "max": 2
+        "max": 3
       }
     ],
     // enforce a maximum depth that blocks can be nested
@@ -614,8 +615,12 @@
     "space-before-blocks": 2,
     // require or disallow space before blocks (off by default)
     "space-before-function-paren": [
-      2,
-      "never"
+      "error",
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
     ],
     // require or disallow space before function opening parenthesis (off by default)
     "space-in-parens": [
@@ -741,7 +746,7 @@
     // Report any invalid exports, i.e. re-export of the same name
     "import/no-named-as-default": 2,
     // Report use of exported name as identifier of default export
-    "import/no-named-as-default-member": 2,
+    "import/no-named-as-default-member": 0,
     // Report use of exported name as property of default export
     "import/no-deprecated": 2,
     // Report imported names marked with @deprecated documentation tag
@@ -771,6 +776,7 @@
       2,
       "never",
       {
+        "json": "always",
         "svg": "always"
       }
     ],
