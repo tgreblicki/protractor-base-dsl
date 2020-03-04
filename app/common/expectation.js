@@ -28,8 +28,10 @@ export class Expectation {
      * @param condition
      */
     static attributeCondition(selector, attrName, condition) {
-        const elementFinder = ElementUtil.elementFinder(selector);
-        const cond = Condition.attributeCondition(elementFinder, attrName, condition);
+        const cond = () => {
+            const finder = ElementUtil.elementFinder(selector);
+            return Condition.attributeCondition(attrName, condition)(finder);
+        };
         return checkPresenceAndCondition(selector, cond);
     }
 
