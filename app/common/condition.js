@@ -120,6 +120,19 @@ export class Condition {
     }
 
     /**
+     * Checks that certain attribute of this element met certain condition.
+     *
+     * @param attrName
+     * @param condition
+     */
+    static attributeCondition(attrName, condition) {
+        return (finder) =>
+            finder.getAttribute(attrName).then(
+                (actualValue) => !R.isNil(actualValue) && condition(actualValue),
+                R.F);
+    }
+
+    /**
      * Checks that text contains provided text chunk.
      *
      * @param text

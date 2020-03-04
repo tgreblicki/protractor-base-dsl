@@ -11,6 +11,12 @@ import {ElementUtil} from './element-util';
  * 10000 (10 s) will be used instead.
  */
 export class WaitCondition {
+    static attributeContainsValue(selector, attrName, value) {
+        const cond = (actualValue) => R.gt(actualValue.indexOf(value), -1);
+        const condition = Condition.attributeCondition(attrName, cond);
+        return WaitCondition.check('for checkbox is selected', condition, selector);
+    }
+
     /**
      * Checks a custom condition for a certain element.
      *

@@ -29,12 +29,8 @@ export class Expectation {
      */
     static attributeCondition(selector, attrName, condition) {
         const elementFinder = ElementUtil.elementFinder(selector);
-        const conditionHolds = () =>
-            elementFinder.getAttribute(attrName).then(
-                (actualValue) => !R.isNil(actualValue) && condition(actualValue),
-                R.F);
-
-        return checkPresenceAndCondition(selector, conditionHolds);
+        const cond = Condition.attributeCondition(elementFinder, attrName, condition);
+        return checkPresenceAndCondition(selector, cond);
     }
 
     /**
