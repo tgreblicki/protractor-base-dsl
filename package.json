@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.8.6",
-    "@babel/parser": "7.7.5",
+    "@babel/parser": "7.8.6",
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/plugin-proposal-decorators": "7.8.3",
     "@babel/plugin-proposal-do-expressions": "7.8.3",
@@ -93,7 +93,7 @@
     "phantomjs-prebuilt": "2.1.16",
     "pretty-error": "2.1.1",
     "progress-bar-webpack-plugin": "2.1.0",
-    "protractor-base-dsl": "0.1.23",
+    "protractor-base-dsl": "0.1.28",
     "protractor-jasmine2-html-reporter": "0.0.7",
     "protractor-screenshot-reporter": "0.0.5",
     "q": "1.5.1",
@@ -102,7 +102,7 @@
     "rimraf": "3.0.2",
     "selenium-webdriver": "3.6.0",
     "strip-sourcemap-loader": "0.0.1",
-    "webpack": "4.41.6",
+    "webpack": "4.42.0",
     "webpack-stream": "5.2.1",
     "yargs": "15.1.0"
   },

@@ -1,6 +1,6 @@
 // eslint-disable-line max-lines
 import R from 'ramda';
-import KeyCodes from 'keycode-js';
+import {KEY_ESCAPE, KEY_RETURN} from 'keycode-js';
 import {code as dragAndDrop} from 'xl-html-dnd';
 import {Expectation} from './expectation';
 import {JQueryAction} from './jquery-action';
@@ -100,7 +100,7 @@ export class Action {
      * @param selector
      */
     static clickEnter(selector) {
-        return Action.keyPress(selector, KeyCodes.KEY_RETURN);
+        return Action.keyPress(selector, KEY_RETURN);
     }
 
     /**
@@ -109,7 +109,7 @@ export class Action {
      * @param selector
      */
     static clickEscape(selector) {
-        return Action.keyPress(selector, KeyCodes.KEY_ESCAPE);
+        return Action.keyPress(selector, KEY_ESCAPE);
     }
 
     /**
