@@ -11,8 +11,28 @@ import {ElementUtil} from './element-util';
  * 10000 (10 s) will be used instead.
  */
 export class WaitCondition {
+    /**
+     * Waiting until an attribute value starts containing an expected value.
+     *
+     * @param selector
+     * @param attrName
+     * @param value
+     */
     static attributeContainsValue(selector, attrName, value) {
         const cond = (actualValue) => R.gt(actualValue.indexOf(value), -1);
+        const condition = Condition.attributeCondition(attrName, cond);
+        return WaitCondition.check('for checkbox is selected', condition, selector);
+    }
+
+    /**
+     * Waiting until an attribute value starts being equal to an expected value.
+     *
+     * @param selector
+     * @param attrName
+     * @param value
+     */
+    static attributeEquals(selector, attrName, value) {
+        const cond = (actualValue) => R.equals(R.trim(actualValue), R.trim(value));
         const condition = Condition.attributeCondition(attrName, cond);
         return WaitCondition.check('for checkbox is selected', condition, selector);
     }

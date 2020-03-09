@@ -3,6 +3,6 @@ import del from 'del';
 import paths from '../utils/paths';
 
 gulp.task('clean', function (cb) {
-    del.sync([paths.distDir, paths.devDistDir], {force: true});
+    del.sync([paths.distDir], {force: true});
     cb();
 });
