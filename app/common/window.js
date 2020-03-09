@@ -23,19 +23,19 @@ export class Window {
                             fs.access(logsFolder, fs.constants.F_OK, (err) => {
                                 if (err) {
                                     fs.mkdir(logsFolder, () => {
-                                        fs.access(fullPath, fs.constants.F_OK, (err) => {
+                                        fs.access(fullPath, fs.constants.F_OK, (err1) => {
                                             const text = browserLog.map(JSON.stringify).join(';\n');
 
-                                            if (err) {
-                                                fs.writeFile(fullPath, text, (err) => {
-                                                    if (err) {
-                                                        log.err(err);
+                                            if (err1) {
+                                                fs.writeFile(fullPath, text, (err2) => {
+                                                    if (err2) {
+                                                        log.err(err2);
                                                     }
                                                 });
                                             } else {
-                                                fs.appendFile(fullPath, text, (err) => {
-                                                    if (err) {
-                                                        log.err(err);
+                                                fs.appendFile(fullPath, text, (err3) => {
+                                                    if (err3) {
+                                                        log.err(err3);
                                                     }
                                                 });
                                             }
