@@ -4,6 +4,10 @@ This library helps with providing the base DSL classes to lessen the burden of c
 DSL prevents the most known issues occurred in Protractor and handles it in a cross-browser way.
 It can handle latest Chrome, Firefox and Internet 11 browsers. 
 
+## Complete API Documentation
+
+Check here [Base DSL API](https://acierto.github.io/protractor-base-dsl/)
+
 ## Global variables
 
 |name|default value|description|
@@ -61,8 +65,6 @@ To come back to a scope of the main application, use this DSL method:
 ```javascript
 Action.switchToDefaultContent()
 ```
-
-
 
 ## How to configure the project to use this package
 
@@ -169,5 +171,3 @@ There are next gulp tasks can be executed:
 ### To release a new version:
 
 `gulp complete-release`
-
-Check [Base DSL API](https://acierto.github.io/protractor-base-dsl/) for more information
