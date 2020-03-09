@@ -50,7 +50,7 @@ export class Window {
     };
 
     /**
-     * Set the default window size.
+     * Sets the default window size.
      */
     static setDefaultSize = () =>
         Window.setSize(
@@ -59,7 +59,7 @@ export class Window {
         );
 
     /**
-     * Set the custom window size.
+     * Sets the custom window size.
      *
      * @param width
      * @param height

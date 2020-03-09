@@ -34,6 +34,35 @@ case `WaitCondition`, not `Expectation` or `Condition` DSL.
 At some situations it happens that click just not propagated by protractor to an element. Without some logical reason.
 When you stuck with such a case, I suggest to use the approach with `Action.jsClick`. It uses execution of pure javascript
 in the browser to click on the element. 
+```javascript
+Action.jsClick(`.click-me-button`);
+```
+
+### Action.typeText
+
+If you don't use this method but rather default typing of Protractor. You'll be very disappointed, especially if you 
+test Internet Explorer or Firefox. The problem of in missed letters. It can also happening on Chrome, much less
+often. When you start using [debounce](https://www.npmjs.com/package/debounce) the problem will be also obvious.
+Usage of this DSL is pretty simple
+```
+Action.typeText('input', 'text to type')
+Action.typeText('input', 'text to type', 300) // if you wish to type slower, by default it is 100 ms.
+```
+
+### Working with iFrame?
+
+Consider to use next DSL to make elements searchable inside of iFrame.
+```javascript
+Action.switchToFrame('#specific-iframe-id')
+```
+After executing this DSL, the scope visibility becomes only this iframe with elements inside it. If you won't do it,
+protractor just won't see any of it. Same applies for elements outside of iframe. Now they are not accessible either.
+To come back to a scope of the main application, use this DSL method:  
+```javascript
+Action.switchToDefaultContent()
+```
+
+
 
 ## How to configure the project to use this package
 
@@ -55,7 +84,7 @@ packages. For that React specific actions are collected in `ReactAction` DSL. Us
 with a help of jQuery or embedded Protractor methods won't work. For that is required to use `ReactTestUtils`. 
 What do you need to do in your project for that? 
 In your webpack configuration you have to expose that variable, by adding a loader
-```javascript
+```javascript`
     {
         test: require.resolve('react-dom/test-utils'),
         use: [{
@@ -100,6 +129,19 @@ global object:
     }]
 }
 ```
+
+### Usage of XPath DSL
+
+This kind of DSL is useful for example when you have multiple element result on specific CSS selector.
+And only the different in text inside of element.
+For example: `<button>Save</button>` and `<button>Close</button>`. If code is yours and you are ok 
+to add extra css class name, then you won't need this DSL. For the rest, it will look like then:
+```javascript
+import {XPath} from 'protractor-base-dsl';
+const controlPanel = `#pane-with-reports .report .btn-panel`;
+const hideFiltersButton = XPath.withButtonContains(controlPanel, 'Hide filters');
+const showFiltersButton = XPath.withButtonContains(controlPanel, 'Show filters');
+``` 
 
 ## For maintainers
 

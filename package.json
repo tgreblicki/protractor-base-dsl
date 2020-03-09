@@ -108,5 +108,6 @@
     "notify": true,
     "setupTestFrameworkScriptFile": "<rootDir>/src/test/javascript/jasmine.conf.js",
     "verbose": true
-  }
+  },
+  "license": "MIT"
 }
