@@ -4,12 +4,79 @@ This library helps with providing the base DSL classes to lessen the burden of c
 DSL prevents the most known issues occurred in Protractor and handles it in a cross-browser way.
 It can handle latest Chrome, Firefox and Internet 11 browsers. 
 
-## Global variables: 
+## Global variables
+
 |name|default value|description|
 |---|---|---|
 |defaultExpectationTimeout|10000|Timeout to wait (in ms) a condition|
 |defaultBrowserWidth|1024|Default width of browser to set before running Protractor tests|
 |defaultBrowserHeight|768|Default height of browser to set before running Protractor tests|
+
+## How to configure the project to use this package
+
+Most of the functionality works without any extra configuration. What you have to do is only use this package 
+as dependency. 
+
+Example:
+```javascript
+import {Expectation, XPath} from 'protractor-base-dsl';
+
+const buttonSelector = (buttonLabel) => XPath.withLinkContains('.dsfaApp .nav', buttonLabel);
+const adminButtonVisible = () => Expectation.displayed(buttonSelector('Admin'));
+```
+
+### Usage of ReactAction DSL
+
+This package can be used by React project and therefore for that some of functionality is implemented based on the react
+packages. For that React specific actions are collected in `ReactAction` DSL. Using action emulation
+with a help of jQuery or embedded Protractor methods won't work. For that is required to use `ReactTestUtils`. 
+What do you need to do in your project for that? 
+In your webpack configuration you have to expose that variable, by adding a loader
+```javascript
+    {
+        test: require.resolve('react-dom/test-utils'),
+        use: [{
+            loader: 'expose-loader',
+            options: 'ReactTestUtils'
+        }]
+    }
+```
+
+### Usage of doubleClick and hover from Action DSL
+
+As a standard protractor library doesn't provide with such functionality there is `bean` npm package was used to 
+achieve it. To make it work, in your project you have to add in webpack configuration extra loader which expose 
+bean:
+```javascript
+{
+    test: require.resolve('bean'),
+    use: [{
+        loader: 'expose-loader',
+        options: 'bean'
+    }]
+}
+```
+
+### Usage of JQueryAction DSL
+
+If in some case it will be required for you to execute jQuery actions, you can use it as well. To make it work, 
+in your project you have to add in webpack configuration extra loader which expose several definitions of jQuery 
+global object:
+```javascript
+{
+    test: require.resolve('jquery'),
+    use: [{
+        loader: 'expose-loader',
+        options: 'jQuery'
+    }, {
+        loader: 'expose-loader',
+        options: 'jquery'
+    }, {
+        loader: 'expose-loader',
+        options: '$'
+    }]
+}
+```
 
 ## For maintainers
 

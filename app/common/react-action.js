@@ -34,6 +34,30 @@ export class ReactAction {
     }
 
     /**
+     * Performs a custom keydown event on a certain element.
+     *
+     * @param selector
+     * @param keyCode
+     */
+    static keyDown = (selector, keyCode) => {
+        const sendKey = (element, code) =>
+            ReactTestUtils.Simulate.keyDown(element, {charCode: code, keyCode: code, which: code});
+        return Action.executeVoidScript(sendKey, ElementUtil.elementFinder(selector), keyCode);
+    };
+
+    /**
+     * Performs a custom keyPress event on a certain element.
+     *
+     * @param selector
+     * @param keyCode
+     */
+    static keyPress = (selector, keyCode) => {
+        const sendKey = (element, code) =>
+            ReactTestUtils.Simulate.keyPress(element, {charCode: code, keyCode: code, which: code});
+        return Action.executeVoidScript(sendKey, ElementUtil.elementFinder(selector), keyCode);
+    };
+
+    /**
      * Leaves the hover from the React component.
      *
      * @param selector
@@ -59,6 +83,8 @@ export class ReactAction {
 
     /**
      * Sets the specified date in date picker.
+     *
+     * This method is created fo testing react-datepicker library.
      *
      * @param selector
      * @param dateValue
@@ -86,5 +112,12 @@ export class ReactAction {
 
         ReactAction.blur(selector);
         ReactAction.mouseLeave(selector);
+    }
+
+    static specialClick(selector) {
+        Expectation.displayed(selector);
+        const sendKey = (element) =>
+            ReactTestUtils.Simulate.click(element);
+        return Action.executeVoidScript(sendKey, ElementUtil.elementFinder(selector));
     }
 }

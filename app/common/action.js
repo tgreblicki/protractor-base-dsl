@@ -123,13 +123,6 @@ export class Action {
         return Action.executeVoidScript(doubleClick, ElementUtil.elementFinder(selector));
     }
 
-    static specialClick(selector) {
-        Expectation.displayed(selector);
-        const sendKey = (element) =>
-            ReactTestUtils.Simulate.click(element);
-        return Action.executeVoidScript(sendKey, ElementUtil.elementFinder(selector));
-    }
-
     /**
      * Performs Ctrl click on a certain element.
      *
@@ -221,30 +214,6 @@ export class Action {
         ActionUtil.expectExecutedAction(script);
         browser.sleep(1500);
     }
-
-    /**
-     * Performs a custom keydown event on a certain element.
-     *
-     * @param selector
-     * @param keyCode
-     */
-    static keyDown = (selector, keyCode) => {
-        const sendKey = (element, code) =>
-            ReactTestUtils.Simulate.keyDown(element, {charCode: code, keyCode: code, which: code});
-        return Action.executeVoidScript(sendKey, ElementUtil.elementFinder(selector), keyCode);
-    };
-
-    /**
-     * Performs a custom keyPress event on a certain element.
-     *
-     * @param selector
-     * @param keyCode
-     */
-    static keyPress = (selector, keyCode) => {
-        const sendKey = (element, code) =>
-            ReactTestUtils.Simulate.keyPress(element, {charCode: code, keyCode: code, which: code});
-        return Action.executeVoidScript(sendKey, ElementUtil.elementFinder(selector), keyCode);
-    };
 
     /**
      * Performs Shift click on a certain element.

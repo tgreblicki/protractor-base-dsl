@@ -20,13 +20,13 @@ export class Window {
                 browser.manage().logs().get('browser')
                     .then((browserLog) => {
                         if (browserLog.length) {
-                            fs.exists(logsFolder, (exists) => {
-                                if (!exists) {
+                            fs.access(logsFolder, fs.constants.F_OK, (err) => {
+                                if (err) {
                                     fs.mkdir(logsFolder, () => {
-                                        fs.exists(fullPath, () => {
+                                        fs.access(fullPath, fs.constants.F_OK, (err) => {
                                             const text = browserLog.map(JSON.stringify).join(';\n');
 
-                                            if (!exists) {
+                                            if (err) {
                                                 fs.writeFile(fullPath, text, (err) => {
                                                     if (err) {
                                                         log.err(err);
