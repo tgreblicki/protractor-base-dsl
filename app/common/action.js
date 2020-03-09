@@ -1,6 +1,5 @@
 // eslint-disable-line max-lines
 import R from 'ramda';
-import {KEY_ESCAPE, KEY_RETURN} from 'keycode-js';
 import {code as dragAndDrop} from 'xl-html-dnd';
 import {Expectation} from './expectation';
 import {JQueryAction} from './jquery-action';
@@ -92,24 +91,6 @@ export class Action {
         expect(ActionUtil.execute(() => finder.click().then(R.F, R.F)));
 
         browser.sleep(delay);
-    }
-
-    /**
-     * Performs an enter on a certain element.
-     *
-     * @param selector
-     */
-    static clickEnter(selector) {
-        return Action.keyPress(selector, KEY_RETURN);
-    }
-
-    /**
-     * Performs an escape on a certain element.
-     *
-     * @param selector
-     */
-    static clickEscape(selector) {
-        return Action.keyPress(selector, KEY_ESCAPE);
     }
 
     /**

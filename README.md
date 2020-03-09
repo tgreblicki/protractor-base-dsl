@@ -12,6 +12,29 @@ It can handle latest Chrome, Firefox and Internet 11 browsers.
 |defaultBrowserWidth|1024|Default width of browser to set before running Protractor tests|
 |defaultBrowserHeight|768|Default height of browser to set before running Protractor tests|
 
+## Overview of several DSL functions
+
+### ActionUtil.repeatAction
+
+One of the most significant problems existing in Protractor is flakiness when certain action considered to be executed
+but in reality it is just skipped by certain reasons. For example you click on a button and expect some action and 
+1 out of 10/20 times test fails due to this. To overcome such issue you can use `ActionUtil.repeatAction`. Example
+of usage:
+```javascript
+import {Action, ActionUtil, WaitCondition} from 'protractor-base-dsl';
+const action = () => Action.click('button');
+const condition = () => WaitCondition.present('.modal-dialog');
+ActionUtil.repeatAction(action, condition);
+```
+At this case `action` method will be 3 times and calls each time expected `condition`. It is essential to use at this
+case `WaitCondition`, not `Expectation` or `Condition` DSL. 
+
+### Action.jsClick
+
+At some situations it happens that click just not propagated by protractor to an element. Without some logical reason.
+When you stuck with such a case, I suggest to use the approach with `Action.jsClick`. It uses execution of pure javascript
+in the browser to click on the element. 
+
 ## How to configure the project to use this package
 
 Most of the functionality works without any extra configuration. What you have to do is only use this package 

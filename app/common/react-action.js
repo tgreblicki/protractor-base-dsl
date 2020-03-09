@@ -1,3 +1,4 @@
+import {KEY_ESCAPE, KEY_RETURN} from 'keycode-js';
 import {Action} from './action';
 import {ActionUtil} from './action-util';
 import {ElementUtil} from './element-util';
@@ -18,6 +19,24 @@ export class ReactAction {
             ReactTestUtils.Simulate.blur(element);
         }
         return Action.executeVoidScript(code, ElementUtil.elementFinder(selector));
+    }
+
+    /**
+     * Performs an enter on a certain element.
+     *
+     * @param selector
+     */
+    static clickEnter(selector) {
+        return ReactAction.keyPress(selector, KEY_RETURN);
+    }
+
+    /**
+     * Performs an escape on a certain element.
+     *
+     * @param selector
+     */
+    static clickEscape(selector) {
+        return ReactAction.keyPress(selector, KEY_ESCAPE);
     }
 
     /**
