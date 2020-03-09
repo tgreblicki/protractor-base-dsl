@@ -24,12 +24,14 @@ One of the most significant problems existing in Protractor is flakiness when ce
 but in reality it is just skipped by certain reasons. For example you click on a button and expect some action and 
 1 out of 10/20 times test fails due to this. To overcome such issue you can use `ActionUtil.repeatAction`. Example
 of usage:
+
 ```javascript
 import {Action, ActionUtil, WaitCondition} from 'protractor-base-dsl';
 const action = () => Action.click('button');
 const condition = () => WaitCondition.present('.modal-dialog');
 ActionUtil.repeatAction(action, condition);
 ```
+
 At this case `action` method will be 3 times and calls each time expected `condition`. It is essential to use at this
 case `WaitCondition`, not `Expectation` or `Condition` DSL. 
 
@@ -38,6 +40,7 @@ case `WaitCondition`, not `Expectation` or `Condition` DSL.
 At some situations it happens that click just not propagated by protractor to an element. Without some logical reason.
 When you stuck with such a case, I suggest to use the approach with `Action.jsClick`. It uses execution of pure javascript
 in the browser to click on the element. 
+
 ```javascript
 Action.jsClick(`.click-me-button`);
 ```
@@ -48,7 +51,8 @@ If you don't use this method but rather default typing of Protractor. You'll be 
 test Internet Explorer or Firefox. The problem of in missed letters. It can also happening on Chrome, much less
 often. When you start using [debounce](https://www.npmjs.com/package/debounce) the problem will be also obvious.
 Usage of this DSL is pretty simple
-```
+
+```javascript
 Action.typeText('input', 'text to type')
 Action.typeText('input', 'text to type', 300) // if you wish to type slower, by default it is 100 ms.
 ```
@@ -56,12 +60,14 @@ Action.typeText('input', 'text to type', 300) // if you wish to type slower, by 
 ### Working with iFrame?
 
 Consider to use next DSL to make elements searchable inside of iFrame.
+
 ```javascript
 Action.switchToFrame('#specific-iframe-id')
 ```
 After executing this DSL, the scope visibility becomes only this iframe with elements inside it. If you won't do it,
 protractor just won't see any of it. Same applies for elements outside of iframe. Now they are not accessible either.
 To come back to a scope of the main application, use this DSL method:  
+
 ```javascript
 Action.switchToDefaultContent()
 ```
@@ -72,6 +78,7 @@ Most of the functionality works without any extra configuration. What you have t
 as dependency. 
 
 Example:
+
 ```javascript
 import {Expectation, XPath} from 'protractor-base-dsl';
 
@@ -86,7 +93,8 @@ packages. For that React specific actions are collected in `ReactAction` DSL. Us
 with a help of jQuery or embedded Protractor methods won't work. For that is required to use `ReactTestUtils`. 
 What do you need to do in your project for that? 
 In your webpack configuration you have to expose that variable, by adding a loader
-```javascript`
+
+```javascript
     {
         test: require.resolve('react-dom/test-utils'),
         use: [{
@@ -101,6 +109,7 @@ In your webpack configuration you have to expose that variable, by adding a load
 As a standard protractor library doesn't provide with such functionality there is `bean` npm package was used to 
 achieve it. To make it work, in your project you have to add in webpack configuration extra loader which expose 
 bean:
+
 ```javascript
 {
     test: require.resolve('bean'),
@@ -116,6 +125,7 @@ bean:
 If in some case it will be required for you to execute jQuery actions, you can use it as well. To make it work, 
 in your project you have to add in webpack configuration extra loader which expose several definitions of jQuery 
 global object:
+
 ```javascript
 {
     test: require.resolve('jquery'),
@@ -138,6 +148,7 @@ This kind of DSL is useful for example when you have multiple element result on 
 And only the different in text inside of element.
 For example: `<button>Save</button>` and `<button>Close</button>`. If code is yours and you are ok 
 to add extra css class name, then you won't need this DSL. For the rest, it will look like then:
+
 ```javascript
 import {XPath} from 'protractor-base-dsl';
 const controlPanel = `#pane-with-reports .report .btn-panel`;
