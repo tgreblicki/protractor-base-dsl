@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>jquery-action.js - Documentation</title>
+    <title>click.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,7 +32,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">jquery-action.js</h1>
+    <h1 class="page-title">click.js</h1>
     
 
     
@@ -43,53 +43,35 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>import {Action} from './action';
-import {Expectation} from './expectation';
-import {ElementUtil} from './element-util';
+import {ActionUtil} from './action-util';
+import {WaitCondition} from './wait-condition';
 
 /**
- * Base DSL actions created with JQuery
+ * Utility method to work with clicking.
  */
-export class JQueryAction {
+export class Click {
     /**
-     * Clicks on element with an extra parameters.
-     * This function can be used for example to perform Ctrl, Shift clicks.
+     *  Click on the element and expects that affected element to be displayed
      *
-     * @param selector
-     * @param clickEvent
+     * @param clickSelector
+     * @param displayedSelector
      */
-    static click(selector, clickEvent) {
-        Expectation.displayed(selector);
-        const code = (element, codeEvent) =>
-            $(element).trigger($.Event('click', codeEvent)); // eslint-disable-line new-cap
-        return Action.executeVoidScript(code, ElementUtil.elementFinder(selector), clickEvent);
+    static andExpectDisplayed(clickSelector, displayedSelector) {
+        const action = () => Action.click(clickSelector);
+        const condition = () => WaitCondition.displayed(displayedSelector);
+        ActionUtil.repeatAction(action, condition);
     }
 
     /**
-     * Performs a custom keydown event on a certain element.
+     *  Click on the element and expects that affected element to be not displayed
      *
-     * @param selector
-     * @param keyCode
+     * @param clickSelector
+     * @param displayedSelector
      */
-    static keyDown(selector, keyCode) {
-        Expectation.displayed(selector);
-        const code = (element, codeEvent) =>
-            $(element).trigger($.Event('keydown', {keyCode: codeEvent})); // eslint-disable-line new-cap
-        return Action.executeVoidScript(code, ElementUtil.elementFinder(selector), keyCode);
-    }
-
-    /**
-     * Performs right click on a certain element.
-     */
-    static rightClick(selector) {
-        Expectation.clickable(selector);
-        const code = (element) => {
-            const elem = $(element)[0];
-            const clientRect = elem.getBoundingClientRect();
-            const coordinates = {pageX: clientRect.left, pageY: clientRect.top};
-            const event = $.Event('contextmenu', coordinates); // eslint-disable-line new-cap
-            $(element).trigger(event);
-        };
-        return Action.executeVoidScript(code, selector);
+    static andExpectNotDisplayed(clickSelector, displayedSelector) {
+        const action = () => Action.click(clickSelector);
+        const condition = () => WaitCondition.notDisplayed(displayedSelector);
+        ActionUtil.repeatAction(action, condition);
     }
 }
 </code></pre>
