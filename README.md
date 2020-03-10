@@ -161,6 +161,18 @@ const showFiltersButton = XPath.withButtonContains(controlPanel, 'Show filters')
 The build/release process is using [Gulp](https://gulpjs.com/). It helps pretty well with creating flows, which 
 easy to develop and maintain.
 
+You have to install Gulp 4 globally as npm package:
+
+`yarn add global gulp` or `npm i -g gulp` 
+
+Verification that you have proper version: 
+`gulp -v` should resulted into
+
+```text
+CLI version: 2.2.0
+Local version: 4.0.2
+```
+
 There are next gulp tasks can be executed:
 
 |Gulp task name|Description|
