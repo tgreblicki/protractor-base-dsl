@@ -27,7 +27,7 @@
 
 <nav >
     
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a><ul class='methods'></ul></li><li><a href="ActionUtil.html">ActionUtil</a><ul class='methods'></ul></li><li><a href="Click.html">Click</a><ul class='methods'></ul></li><li><a href="Condition.html">Condition</a><ul class='methods'></ul></li><li><a href="ElementUtil.html">ElementUtil</a><ul class='methods'></ul></li><li><a href="Expectation.html">Expectation</a><ul class='methods'></ul></li><li><a href="JQueryAction.html">JQueryAction</a><ul class='methods'></ul></li><li><a href="ReactAction.html">ReactAction</a><ul class='methods'></ul></li><li><a href="WaitCondition.html">WaitCondition</a><ul class='methods'></ul></li><li><a href="Window.html">Window</a></li><li><a href="XPath.html">XPath</a><ul class='methods'></ul></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Action.html">Action</a><ul class='methods'></ul></li><li><a href="ActionUtil.html">ActionUtil</a><ul class='methods'></ul></li><li><a href="Alert.html">Alert</a><ul class='methods'></ul></li><li><a href="Click.html">Click</a><ul class='methods'></ul></li><li><a href="Condition.html">Condition</a><ul class='methods'></ul></li><li><a href="ElementUtil.html">ElementUtil</a><ul class='methods'></ul></li><li><a href="Expectation.html">Expectation</a><ul class='methods'></ul></li><li><a href="JQueryAction.html">JQueryAction</a><ul class='methods'></ul></li><li><a href="ReactAction.html">ReactAction</a><ul class='methods'></ul></li><li><a href="WaitCondition.html">WaitCondition</a><ul class='methods'></ul></li><li><a href="Window.html">Window</a></li><li><a href="XPath.html">XPath</a><ul class='methods'></ul></li></ul>
 </nav>
 
 <div id="main">
@@ -61,6 +61,8 @@
 <p>This library helps with providing the base DSL classes to lessen the burden of creating protractor scenarios.
 DSL prevents the most known issues occurred in Protractor and handles it in a cross-browser way.
 It can handle latest Chrome, Firefox and Internet 11 browsers.</p>
+<h2>Complete API Documentation</h2>
+<p>Check here <a href="https://acierto.github.io/protractor-base-dsl/">Base DSL API</a></p>
 <h2>Global variables</h2>
 <table>
 <thead>
@@ -105,6 +107,25 @@ case <code>WaitCondition</code>, not <code>Expectation</code> or <code>Condition
 <p>At some situations it happens that click just not propagated by protractor to an element. Without some logical reason.
 When you stuck with such a case, I suggest to use the approach with <code>Action.jsClick</code>. It uses execution of pure javascript
 in the browser to click on the element.</p>
+<pre class="prettyprint source lang-javascript"><code>Action.jsClick(`.click-me-button`);
+</code></pre>
+<h3>Action.typeText</h3>
+<p>If you don't use this method but rather default typing of Protractor. You'll be very disappointed, especially if you
+test Internet Explorer or Firefox. The problem of in missed letters. It can also happening on Chrome, much less
+often. When you start using <a href="https://www.npmjs.com/package/debounce">debounce</a> the problem will be also obvious.
+Usage of this DSL is pretty simple</p>
+<pre class="prettyprint source lang-javascript"><code>Action.typeText('input', 'text to type')
+Action.typeText('input', 'text to type', 300) // if you wish to type slower, by default it is 100 ms.
+</code></pre>
+<h3>Working with iFrame?</h3>
+<p>Consider to use next DSL to make elements searchable inside of iFrame.</p>
+<pre class="prettyprint source lang-javascript"><code>Action.switchToFrame('#specific-iframe-id')
+</code></pre>
+<p>After executing this DSL, the scope visibility becomes only this iframe with elements inside it. If you won't do it,
+protractor just won't see any of it. Same applies for elements outside of iframe. Now they are not accessible either.
+To come back to a scope of the main application, use this DSL method:</p>
+<pre class="prettyprint source lang-javascript"><code>Action.switchToDefaultContent()
+</code></pre>
 <h2>How to configure the project to use this package</h2>
 <p>Most of the functionality works without any extra configuration. What you have to do is only use this package
 as dependency.</p>
@@ -158,9 +179,26 @@ global object:</p>
     }]
 }
 </code></pre>
+<h3>Usage of XPath DSL</h3>
+<p>This kind of DSL is useful for example when you have multiple element result on specific CSS selector.
+And only the different in text inside of element.
+For example: <code>&lt;button&gt;Save&lt;/button&gt;</code> and <code>&lt;button&gt;Close&lt;/button&gt;</code>. If code is yours and you are ok
+to add extra css class name, then you won't need this DSL. For the rest, it will look like then:</p>
+<pre class="prettyprint source lang-javascript"><code>import {XPath} from 'protractor-base-dsl';
+const controlPanel = `#pane-with-reports .report .btn-panel`;
+const hideFiltersButton = XPath.withButtonContains(controlPanel, 'Hide filters');
+const showFiltersButton = XPath.withButtonContains(controlPanel, 'Show filters');
+</code></pre>
 <h2>For maintainers</h2>
 <p>The build/release process is using <a href="https://gulpjs.com/">Gulp</a>. It helps pretty well with creating flows, which
 easy to develop and maintain.</p>
+<p>You have to install Gulp 4 globally as npm package:</p>
+<p><code>yarn add global gulp</code> or <code>npm i -g gulp</code></p>
+<p>Verification that you have proper version:
+<code>gulp -v</code> should resulted into</p>
+<pre class="prettyprint source lang-text"><code>CLI version: 2.2.0
+Local version: 4.0.2
+</code></pre>
 <p>There are next gulp tasks can be executed:</p>
 <table>
 <thead>
@@ -211,8 +249,7 @@ easy to develop and maintain.</p>
 <h3>To build a new version:</h3>
 <p><code>gulp build-dist</code></p>
 <h3>To release a new version:</h3>
-<p><code>gulp complete-release</code></p>
-<p>Check <a href="https://acierto.github.io/protractor-base-dsl/">Base DSL API</a> for more information</p></article>
+<p><code>gulp complete-release</code></p></article>
     </section>
 
 
@@ -227,7 +264,7 @@ easy to develop and maintain.</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a> on Mon Mar 09 2020 13:59:57 GMT+0100 (Central European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a> on Fri May 08 2020 13:32:33 GMT+0200 (Central European Summer Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

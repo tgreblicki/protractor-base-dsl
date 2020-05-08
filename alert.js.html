@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>element-util.js - Documentation</title>
+    <title>alert.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,7 +32,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">element-util.js</h1>
+    <h1 class="page-title">alert.js</h1>
     
 
     
@@ -42,27 +42,36 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Util class to work with the protractor elements.
+            <pre class="prettyprint source linenums"><code>import R from 'ramda';
+
+const doAction = (action) => browser.driver.switchTo().alert().then(action, R.F);
+
+/**
+ * Base operations with alert dialog
  */
-export class ElementUtil {
+export class Alert {
     /**
-     * Based on provided selector creates a protractor ElementFinder.
-     * Selector itself can be provided in several types.
-     * If that's already ElementFinder then it will be returned as is.
-     * If it was provided as a locator (it can be created as By.css, By.xpath, etc.) then it will be converted to
-     * ElementFinder.
-     * The last option is to provide a string, at this case By.css locator going to be applied to it and converted
-     * to ElementFinder.
-     * @param selector
+     * Accepts the alert if it is present
      */
-    static elementFinder(selector) {
-        if (selector instanceof protractor.ElementFinder) {
-            return selector;
-        } else if (selector &amp;&amp; selector.findElementsOverride) {
-            return element(selector);
-        }
-        return element(By.css(selector));
+    static accept() {
+        doAction((alert) => alert.accept());
+    }
+
+    /**
+     * Dismisses the alert if it is present
+     */
+    static dismiss() {
+        doAction((alert) => alert.dismiss());
+    }
+
+    /**
+     * Checks that alert dialog has a certain text.
+     *
+     * @param text
+     */
+    static textEquals(text) {
+        const alertDialog = browser.switchTo().alert();
+        expect(alertDialog.getText()).toEqual(text.toString());
     }
 }
 </code></pre>
