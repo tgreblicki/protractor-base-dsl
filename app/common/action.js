@@ -77,6 +77,13 @@ export class Action {
     }
 
     /**
+     * Performs an enter on a certain element.
+     */
+    static clickEnter(selector) {
+        Action.sendKeys(selector, protractor.Key.ENTER);
+    }
+
+    /**
      * Clicks on element nevertheless if it's clickable or not. You can use it when
      * element is appeared only for some period of time and then disappears.
      * As e2e especially for IE is slow it can happen that Protractor can miss to click on that element during
@@ -94,6 +101,15 @@ export class Action {
     }
 
     /**
+     * Performs Ctrl click on a certain element.
+     *
+     * @param selector
+     */
+    static ctrlClick(selector) {
+        return JQueryAction.click(selector, {ctrlKey: true});
+    }
+
+    /**
      * Performs double click on a certain element.
      *
      * @param selector
@@ -102,15 +118,6 @@ export class Action {
         Expectation.displayed(selector);
         const doubleClick = (element) => bean.fire(element, 'dblclick');
         return Action.executeVoidScript(doubleClick, ElementUtil.elementFinder(selector));
-    }
-
-    /**
-     * Performs Ctrl click on a certain element.
-     *
-     * @param selector
-     */
-    static ctrlClick(selector) {
-        return JQueryAction.click(selector, {ctrlKey: true});
     }
 
     /**
@@ -143,17 +150,6 @@ export class Action {
     static hover(selector) {
         Expectation.displayed(selector);
         const hover = (element) => bean.fire(element, 'mouseover');
-        Action.executeVoidScript(hover, ElementUtil.elementFinder(selector));
-    }
-
-    /**
-     * Hovers on a certain element by mousing move to an element
-     *
-     * @param selector
-     */
-    static mousemove(selector) {
-        Expectation.displayed(selector);
-        const hover = (element) => bean.fire(element, 'mousemove');
         Action.executeVoidScript(hover, ElementUtil.elementFinder(selector));
     }
 
@@ -194,6 +190,27 @@ export class Action {
 
         ActionUtil.expectExecutedAction(script);
         browser.sleep(1500);
+    }
+
+    /**
+     * Hovers on a certain element by mousing move to an element
+     *
+     * @param selector
+     */
+    static mousemove(selector) {
+        Expectation.displayed(selector);
+        const hover = (element) => bean.fire(element, 'mousemove');
+        Action.executeVoidScript(hover, ElementUtil.elementFinder(selector));
+    }
+
+    /**
+     * Sends any provided keys for a certain element.
+     *
+     * @param keys
+     * @param selector
+     */
+    static sendKeys(selector, keys) {
+        ElementUtil.elementFinder(selector).sendKeys(keys);
     }
 
     /**
