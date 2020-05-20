@@ -266,8 +266,6 @@ export class Action {
     static typeNewText = (selector, text, sleep) => {
         Action.click(ElementUtil.elementFinder(selector));
         Action.clearText(selector);
-        const action = () => Action.typeText(selector, text, sleep);
-        const condition = () => WaitCondition.textEquals(selector, text);
-        ActionUtil.repeatAction(action, condition);
+        Action.typeText(selector, text, sleep);
     };
 }
