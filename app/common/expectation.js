@@ -281,7 +281,7 @@ export class Expectation {
      * @param expectationFunction
      * @param defaultDateFormat
      */
-    static withLocaleDate(expectationFunction, defaultDateFormat = 'MMM D, YYYY') {
+    static withLocaleDate(expectationFunction, defaultDateFormat = 'MMM d, yyyy') {
         return ActionUtil.expectExecutedAction(() =>
             browser.executeScript(() =>
                 navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.userLanguage
