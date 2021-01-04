@@ -50,6 +50,9 @@ export class Action {
                 ElementUtil.elementFinder(selector).getAttribute('value').then((value) => {
                     if (value) {
                         R.times(() => ElementUtil.elementFinder(selector)
+                            .sendKeys(protractor.Key.ARROW_RIGHT), value.length);
+
+                        R.times(() => ElementUtil.elementFinder(selector)
                             .sendKeys(protractor.Key.BACK_SPACE), value.length);
                     }
                 });
