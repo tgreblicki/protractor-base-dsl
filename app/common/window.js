@@ -12,7 +12,7 @@ export class Window {
      */
     static captureBrowserLogs = () => {
         const logsFolder = global.capturedBrowserLogsFolder || 'build/reports';
-        browser.getCapabilities().then((capabilities) => {
+        return browser.getCapabilities().then((capabilities) => {
             const browserName = capabilities.get('browserName');
             if (!R.equals(browserName, 'internet explorer') && !R.equals(browserName, 'firefox')) {
                 const logFileName = 'consoleErrors.txt';
@@ -64,15 +64,15 @@ export class Window {
      * @param width
      * @param height
      */
-    static setSize = (width, height) => {
+    static setSize = async (width, height) => {
         const resize = (windowWidth, windowHeight) =>
             window.resizeTo(windowWidth, windowHeight);
-        ActionUtil.execute(() => browser.executeScript(resize, width, height));
+        await ActionUtil.execute(async () => browser.executeScript(resize, width, height));
     };
 
     /**
      * Refreshes the window content.
      */
-    static refresh = () =>
+    static refresh = async () =>
         browser.driver.navigate().refresh();
 }

@@ -9,15 +9,15 @@ export class Alert {
     /**
      * Accepts the alert if it is present
      */
-    static accept() {
-        doAction((alert) => alert.accept());
+    static async accept() {
+        await doAction((alert) => alert.accept());
     }
 
     /**
      * Dismisses the alert if it is present
      */
-    static dismiss() {
-        doAction((alert) => alert.dismiss());
+    static async dismiss() {
+        await doAction((alert) => alert.dismiss());
     }
 
     /**
@@ -25,8 +25,8 @@ export class Alert {
      *
      * @param text
      */
-    static textEquals(text) {
-        const alertDialog = browser.switchTo().alert();
-        expect(alertDialog.getText()).toEqual(text.toString());
+    static async textEquals(text) {
+        const alertDialog = await browser.switchTo().alert();
+        expect(await alertDialog.getText()).toEqual(text.toString());
     }
 }

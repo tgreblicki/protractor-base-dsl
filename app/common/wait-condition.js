@@ -44,10 +44,10 @@ export class WaitCondition {
      * @param condition
      * @param selector
      */
-    static check(message, condition, selector) {
+    static async check(message, condition, selector) {
         const finder = () => ElementUtil.elementFinder(selector);
         const errorMessage = `${message}. Selector: ${finder().locator()}`;
-        const cond = new webdriver.Condition(errorMessage, () => condition(finder()));
+        const cond = await new webdriver.Condition(errorMessage, async () => condition(finder()));
         return browser.wait(cond, global.defaultExpectationTimeout || 10000);
     }
 
@@ -57,7 +57,7 @@ export class WaitCondition {
      * @param selector
      * @param checked
      */
-    static checkboxChecked(selector, checked) {
+    static async checkboxChecked(selector, checked) {
         const condition = Condition.checkboxChecked(checked);
         return WaitCondition.check('for checkbox is selected', condition, selector);
     }

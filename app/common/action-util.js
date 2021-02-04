@@ -43,9 +43,9 @@ export class ActionUtil {
      *
      * @param action
      */
-    static execute(action) {
+    static async execute(action) {
         const callerStack = createCallerStack();
-        const retry = (current, max) =>
+        const retry = async (current, max) =>
             action().then(undefined, (error) => processError(retry, callerStack, error, current, max));
         return retry(1, maxRetries);
     }
@@ -55,8 +55,8 @@ export class ActionUtil {
      *
      * @param fn {function} Action to execute
      */
-    static expectExecutedAction(fn) {
-        return expect(ActionUtil.execute(() => fn()));
+    static async expectExecutedAction(fn) {
+        return expect(await ActionUtil.execute(() => fn()));
     }
 
     /**
@@ -67,10 +67,10 @@ export class ActionUtil {
      * @param action
      * @param condition
      */
-    static repeatAction(action, condition) {
+    static async repeatAction(action, condition) {
         const callerStack = createCallerStack();
-        const retry = (current, max) => {
-            action();
+        const retry = async (current, max) => {
+            await action();
             return condition().then(Q.resolve, (error) => processError(retry, callerStack, error, current, max));
         };
         return retry(1, maxRetries);
@@ -85,10 +85,10 @@ export class ActionUtil {
      * @param timesToExecute
      * @param timeout
      */
-    static times(action, timesToExecute, timeout = delayTime) {
-        R.forEach(() => {
-            action();
-            browser.sleep(timeout);
+    static async times(action, timesToExecute, timeout = delayTime) {
+        R.forEach(async () => {
+            await action();
+            await browser.sleep(timeout);
         }, R.range(0, timesToExecute));
     }
 }
