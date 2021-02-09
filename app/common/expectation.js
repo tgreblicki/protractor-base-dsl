@@ -5,14 +5,14 @@ import {ElementUtil} from './element-util';
 import {Condition} from './condition';
 import {WaitCondition} from './wait-condition';
 
-const checkCondition = (selector, message, condition) =>
-    ActionUtil.expectExecutedAction(() => WaitCondition.check(message, condition, selector));
+const checkCondition = async (selector, message, condition) =>
+    await ActionUtil.expectExecutedAction(async () => await WaitCondition.check(message, condition, selector));
 
-const checkPresenceAndCondition = (selector, condition) => {
+const checkPresenceAndCondition = async (selector, condition) => {
     const EC = protractor.ExpectedConditions;
     const elementFinder = ElementUtil.elementFinder(selector);
 
-    return ActionUtil.expectExecutedAction(() =>
+    return ActionUtil.expectExecutedAction(async () =>
         browser.wait(EC.and(EC.presenceOf(elementFinder), condition), global.defaultExpectationTimeout));
 };
 
@@ -153,7 +153,7 @@ export class Expectation {
      * @param selector
      * @param expectedCount
      */
-    static count(selector, expectedCount) {
+    static async count(selector, expectedCount) {
         const countIs = () => element.all(By.css(selector)).count().then((count) => R.equals(count, expectedCount));
         return Expectation.condition(countIs);
     }
@@ -164,7 +164,7 @@ export class Expectation {
      * @param selector
      * @param expectedCount
      */
-    static countAtLeast(selector, expectedCount) {
+    static async countAtLeast(selector, expectedCount) {
         const countIs = () =>
             element.all(By.css(selector)).count().then((count) => R.gte(count, expectedCount));
         return Expectation.condition(countIs);
@@ -177,9 +177,9 @@ export class Expectation {
      * @param dateValue
      * @param defaultDateFormat
      */
-    static dateValue(selector, dateValue, defaultDateFormat) {
-        const expectationFunction = (dateFormat) =>
-            Expectation.attributeEquals(selector, 'value', dateValue.format(dateFormat));
+    static async dateValue(selector, dateValue, defaultDateFormat) {
+        const expectationFunction = async (dateFormat) =>
+            await Expectation.attributeEquals(selector, 'value', dateValue.format(dateFormat));
         return Expectation.withLocaleDate(expectationFunction, defaultDateFormat);
     }
 
@@ -188,7 +188,7 @@ export class Expectation {
      *
      * @param selector
      */
-    static disabled(selector) {
+    static async disabled(selector) {
         return ActionUtil.expectExecutedAction(() => WaitCondition.disabled(selector));
     }
 
@@ -197,7 +197,7 @@ export class Expectation {
      *
      * @param selector
      */
-    static displayed(selector) {
+    static async displayed(selector) {
         return ActionUtil.expectExecutedAction(() => WaitCondition.displayed(selector));
     }
 
@@ -206,7 +206,7 @@ export class Expectation {
      *
      * @param selector
      */
-    static emptyText(selector) {
+    static async emptyText(selector) {
         return ActionUtil.expectExecutedAction(() => WaitCondition.textEquals(selector, ''));
     }
 

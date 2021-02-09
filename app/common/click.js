@@ -12,10 +12,10 @@ export class Click {
      * @param clickSelector
      * @param displayedSelector
      */
-    static andExpectDisplayed(clickSelector, displayedSelector) {
-        const action = () => Action.click(clickSelector);
-        const condition = () => WaitCondition.displayed(displayedSelector);
-        ActionUtil.repeatAction(action, condition);
+    static async andExpectDisplayed(clickSelector, displayedSelector) {
+        const action = async () => await Action.click(clickSelector);
+        const condition = async () => await WaitCondition.displayed(displayedSelector);
+        await ActionUtil.repeatAction(action, condition);
     }
 
     /**
@@ -24,9 +24,9 @@ export class Click {
      * @param clickSelector
      * @param displayedSelector
      */
-    static andExpectNotDisplayed(clickSelector, displayedSelector) {
-        const action = () => Action.click(clickSelector);
-        const condition = () => WaitCondition.notDisplayed(displayedSelector);
-        ActionUtil.repeatAction(action, condition);
+    static async andExpectNotDisplayed(clickSelector, displayedSelector) {
+        const action = async () => await Action.click(clickSelector);
+        const condition = async () => await WaitCondition.notDisplayed(displayedSelector);
+        await ActionUtil.repeatAction(action, condition);
     }
 }

@@ -24,7 +24,7 @@ export class Condition {
      *
      * @param finder
      */
-    static clickable(finder) {
+    static async clickable(finder) {
         return Condition.compose(Condition.displayed(finder), () => Condition.enabled(finder));
     }
 
@@ -34,7 +34,7 @@ export class Condition {
      * @param currentResult
      * @param nextCondition
      */
-    static compose(currentResult, nextCondition) {
+    static async compose(currentResult, nextCondition) {
         return Q.when(currentResult).then((result) => {
             if (result) {
                 try {
@@ -63,7 +63,7 @@ export class Condition {
      *
      * @param finder
      */
-    static displayed(finder) {
+    static async displayed(finder) {
         return Condition.compose(Condition.present(finder), () => Condition.onlyDisplayed(finder));
     }
 

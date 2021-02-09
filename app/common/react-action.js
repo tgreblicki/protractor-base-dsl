@@ -110,31 +110,31 @@ export class ReactAction {
      * @param blurAction a function if specified to be executed before focusing back to a component. That's required
      * to apply the value.
      */
-    static setDatePickerValue(selector, dateValue, blurAction) {
+    static async setDatePickerValue(selector, dateValue, blurAction) {
         const selectedDateSelector = '.react-datepicker__day--selected';
         const setDate = (element, value) =>
             ReactTestUtils.Simulate.change(element, {target: {value}});
 
-        const expectationFunction = (dateFormat) =>
-            Action.executeVoidScript(setDate, ElementUtil.elementFinder(selector), dateValue.format(dateFormat));
-        Expectation.withLocaleDate(expectationFunction);
+        const expectationFunction = async (dateFormat) =>
+            await Action.executeVoidScript(setDate, ElementUtil.elementFinder(selector), dateValue.format(dateFormat));
+        await Expectation.withLocaleDate(expectationFunction);
 
         if (blurAction) {
             blurAction();
         }
         ReactAction.focus(selector);
-        Expectation.displayed(selectedDateSelector);
+        await Expectation.displayed(selectedDateSelector);
 
-        const action = () => Action.click(selectedDateSelector);
-        const condition = () => WaitCondition.notPresent(selectedDateSelector);
-        ActionUtil.repeatAction(action, condition);
+        const action = async () => await Action.click(selectedDateSelector);
+        const condition = async () => await WaitCondition.notPresent(selectedDateSelector);
+        await ActionUtil.repeatAction(action, condition);
 
         ReactAction.blur(selector);
         ReactAction.mouseLeave(selector);
     }
 
-    static specialClick(selector) {
-        Expectation.displayed(selector);
+    static async specialClick(selector) {
+        await Expectation.displayed(selector);
         const sendKey = (element) =>
             ReactTestUtils.Simulate.click(element);
         return Action.executeVoidScript(sendKey, ElementUtil.elementFinder(selector));
