@@ -124,8 +124,6 @@ export class Action {
      * @param {function} scriptFunction
      * @param {array} scriptArguments
      */
-    // eslint-disable-next-line no-warning-comments
-    // TODO check for async scriptFunction
     static async executeVoidScript(scriptFunction, ...scriptArguments) {
         const script = `(${scriptFunction}).apply(null, arguments);`;
         return ActionUtil.expectExecutedAction(async () => await browser.executeScript(script, ...scriptArguments));
@@ -163,8 +161,8 @@ export class Action {
         await Expectation.displayed(selector);
         await Expectation.clickable(selector);
 
-        async function clickIt() {
-            await arguments[0].click(); // eslint-disable-line prefer-rest-params
+        function clickIt() {
+            arguments[0].click(); // eslint-disable-line prefer-rest-params
         }
 
         await Action.executeVoidScript(clickIt, ElementUtil.elementFinder(selector));
