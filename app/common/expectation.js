@@ -189,7 +189,7 @@ export class Expectation {
      * @param selector
      */
     static async disabled(selector) {
-        return ActionUtil.expectExecutedAction(() => WaitCondition.disabled(selector));
+        return ActionUtil.expectExecutedAction(async () => await WaitCondition.disabled(selector));
     }
 
     /**
@@ -198,7 +198,7 @@ export class Expectation {
      * @param selector
      */
     static async displayed(selector) {
-        return ActionUtil.expectExecutedAction(() => WaitCondition.displayed(selector));
+        return ActionUtil.expectExecutedAction(async () => await WaitCondition.displayed(selector));
     }
 
     /**
@@ -207,7 +207,7 @@ export class Expectation {
      * @param selector
      */
     static async emptyText(selector) {
-        return ActionUtil.expectExecutedAction(() => WaitCondition.textEquals(selector, ''));
+        return ActionUtil.expectExecutedAction(async () => await WaitCondition.textEquals(selector, ''));
     }
 
     /**
@@ -217,7 +217,7 @@ export class Expectation {
      * @param selector
      */
     static enabled(selector) {
-        return ActionUtil.expectExecutedAction(() => WaitCondition.enabled(selector));
+        return ActionUtil.expectExecutedAction(async () => await WaitCondition.enabled(selector));
     }
 
     /**
@@ -295,7 +295,7 @@ export class Expectation {
      * @param selector
      */
     static notDisplayed(selector) {
-        return ActionUtil.expectExecutedAction(() => WaitCondition.notDisplayed(selector));
+        return ActionUtil.expectExecutedAction(async () => await WaitCondition.notDisplayed(selector));
     }
 
     /**
@@ -304,7 +304,7 @@ export class Expectation {
      * @param selector
      */
     static notPresent(selector) {
-        return ActionUtil.expectExecutedAction(() => WaitCondition.notPresent(selector));
+        return ActionUtil.expectExecutedAction(async () => await WaitCondition.notPresent(selector));
     }
 
     /**
@@ -313,7 +313,7 @@ export class Expectation {
      * @param selector
      */
     static present(selector) {
-        return ActionUtil.expectExecutedAction(() => WaitCondition.present(selector));
+        return ActionUtil.expectExecutedAction(async () => await WaitCondition.present(selector));
     }
 
     /**
@@ -322,7 +322,7 @@ export class Expectation {
      * @param selector
      */
     static presentWithText(selector) {
-        return ActionUtil.expectExecutedAction(() => WaitCondition.presentWithText(selector));
+        return ActionUtil.expectExecutedAction(async () => await WaitCondition.presentWithText(selector));
     }
 
     /**
@@ -330,8 +330,8 @@ export class Expectation {
      *
      * @param selector
      */
-    static readOnly(selector) {
-        Expectation.present(selector);
+    static async readOnly(selector) {
+        await Expectation.present(selector);
         return Expectation.attributeContainsValue(selector, 'readonly', 'true');
     }
 
