@@ -27,7 +27,7 @@ export class Expectation {
      * @param attrName
      * @param condition
      */
-    static attributeCondition(selector, attrName, condition) {
+    static async attributeCondition(selector, attrName, condition) {
         const cond = () => {
             const finder = ElementUtil.elementFinder(selector);
             return Condition.attributeCondition(attrName, condition)(finder);
@@ -42,7 +42,7 @@ export class Expectation {
      * @param attribute
      * @param text
      */
-    static attributeEquals(selector, attribute, text) {
+    static async attributeEquals(selector, attribute, text) {
         const elementFinder = ElementUtil.elementFinder(selector);
         const textIs = () =>
             elementFinder.getAttribute(attribute).then(
@@ -59,7 +59,7 @@ export class Expectation {
      * @param attribute
      * @param text
      */
-    static attributeNotEqual(selector, attribute, text) {
+    static async attributeNotEqual(selector, attribute, text) {
         const elementFinder = ElementUtil.elementFinder(selector);
         const textIs = () =>
             elementFinder.getAttribute(attribute).then(
@@ -76,7 +76,7 @@ export class Expectation {
      * @param attrName
      * @param value
      */
-    static attributeContainsValue(selector, attrName, value) {
+    static async attributeContainsValue(selector, attrName, value) {
         const condition = (actualValue) => R.gt(actualValue.indexOf(value), -1);
         return Expectation.attributeCondition(selector, attrName, condition);
     }
@@ -88,7 +88,7 @@ export class Expectation {
      * @param attrName
      * @param value
      */
-    static attributeDoesntContainValue(selector, attrName, value) {
+    static async attributeDoesntContainValue(selector, attrName, value) {
         const condition = (actualValue) => R.equals(actualValue.indexOf(value), -1);
         return Expectation.attributeCondition(selector, attrName, condition);
     }
@@ -100,7 +100,7 @@ export class Expectation {
      * @param attrName
      * @param minValue
      */
-    static attributeValueNotLessThan(selector, attrName, minValue) {
+    static async attributeValueNotLessThan(selector, attrName, minValue) {
         const condition = (actualValue) => R.gte(parseInt(actualValue, 10), minValue);
         return Expectation.attributeCondition(selector, attrName, condition);
     }
@@ -112,7 +112,7 @@ export class Expectation {
      * @param attrName
      * @param maxValue
      */
-    static attributeValueNotMoreThan(selector, attrName, maxValue) {
+    static async attributeValueNotMoreThan(selector, attrName, maxValue) {
         const condition = (actualText) => R.lte(Math.abs(parseInt(actualText, 10) - maxValue), 1);
         return Expectation.attributeCondition(selector, attrName, condition);
     }
@@ -123,7 +123,7 @@ export class Expectation {
      * @param selector
      * @param checked
      */
-    static checkboxChecked(selector, checked) {
+    static async checkboxChecked(selector, checked) {
         return ActionUtil.expectExecutedAction(() => WaitCondition.checkboxChecked(selector, checked));
     }
 
@@ -131,7 +131,7 @@ export class Expectation {
      * Checks if element is clickable.
      * @param selector
      */
-    static clickable(selector) {
+    static async clickable(selector) {
         return checkCondition(selector, 'for element to be clickable', Condition.clickable);
     }
 
@@ -141,7 +141,7 @@ export class Expectation {
      * @param conditionFunction
      * @param message
      */
-    static condition(conditionFunction, message) {
+    static async condition(conditionFunction, message) {
         return ActionUtil.expectExecutedAction(() =>
             browser.wait(conditionFunction, global.defaultExpectationTimeout, message, global.defaultExpectationTimeout)
         );
@@ -164,7 +164,7 @@ export class Expectation {
      * @param selector
      * @param expectedCount
      */
-    static async countAtLeast(selector, expectedCount) {
+    static async async countAtLeast(selector, expectedCount) {
         const countIs = () =>
             element.all(By.css(selector)).count().then((count) => R.gte(count, expectedCount));
         return Expectation.condition(countIs);
@@ -177,7 +177,7 @@ export class Expectation {
      * @param dateValue
      * @param defaultDateFormat
      */
-    static async dateValue(selector, dateValue, defaultDateFormat) {
+    static async async dateValue(selector, dateValue, defaultDateFormat) {
         const expectationFunction = async (dateFormat) =>
             await Expectation.attributeEquals(selector, 'value', dateValue.format(dateFormat));
         return Expectation.withLocaleDate(expectationFunction, defaultDateFormat);
@@ -188,7 +188,7 @@ export class Expectation {
      *
      * @param selector
      */
-    static async disabled(selector) {
+    static async async disabled(selector) {
         return ActionUtil.expectExecutedAction(async () => await WaitCondition.disabled(selector));
     }
 
@@ -197,7 +197,7 @@ export class Expectation {
      *
      * @param selector
      */
-    static async displayed(selector) {
+    static async async displayed(selector) {
         return ActionUtil.expectExecutedAction(async () => await WaitCondition.displayed(selector));
     }
 
@@ -216,7 +216,7 @@ export class Expectation {
      *
      * @param selector
      */
-    static enabled(selector) {
+    static async enabled(selector) {
         return ActionUtil.expectExecutedAction(async () => await WaitCondition.enabled(selector));
     }
 
@@ -225,7 +225,7 @@ export class Expectation {
      *
      * @param selector
      */
-    static hasScroll(selector) {
+    static async hasScroll(selector) {
         const element = ElementUtil.elementFinder(selector);
         expect(element.getSize().then(
             (size) =>
@@ -237,7 +237,7 @@ export class Expectation {
      *
      * @param selector
      */
-    static hasNoScroll(selector) {
+    static async hasNoScroll(selector) {
         const element = ElementUtil.elementFinder(selector);
         expect(element.getSize().then(
             (size) =>
@@ -250,14 +250,14 @@ export class Expectation {
      * @param selector
      * @param attrName
      */
-    static hasAttribute(selector, attrName) {
+    static async hasAttribute(selector, attrName) {
         const elementFilter = () => ElementUtil.elementFinder(selector);
         const hasAttr = () =>
             elementFilter().getAttribute(attrName).then((attrValue) => !R.isNil(attrValue), R.F);
         return checkPresenceAndCondition(selector, hasAttr);
     }
 
-    static hasClassName(selector, className) {
+    static async hasClassName(selector, className) {
         const element = ElementUtil.elementFinder(selector);
         return element.getAttribute('class').then((classes) => R.includes(className, classes.split(' ')));
     }
@@ -268,7 +268,7 @@ export class Expectation {
      * @param selector
      * @param attrName
      */
-    static hasNoAttribute(selector, attrName) {
+    static async hasNoAttribute(selector, attrName) {
         const elementFilter = () => ElementUtil.elementFinder(selector);
         const hasNoAttr = () =>
             elementFilter().getAttribute(attrName).then((attrValue) => R.isNil(attrValue), R.F);
@@ -281,7 +281,7 @@ export class Expectation {
      * @param expectationFunction
      * @param defaultDateFormat
      */
-    static withLocaleDate(expectationFunction, defaultDateFormat = 'MMM D, YYYY') {
+    static async withLocaleDate(expectationFunction, defaultDateFormat = 'MMM D, YYYY') {
         return ActionUtil.expectExecutedAction(() =>
             browser.executeScript(() =>
                 navigator.languages && navigator.languages.length ? navigator.languages[0] : navigator.userLanguage
@@ -294,7 +294,7 @@ export class Expectation {
      *
      * @param selector
      */
-    static notDisplayed(selector) {
+    static async notDisplayed(selector) {
         return ActionUtil.expectExecutedAction(async () => await WaitCondition.notDisplayed(selector));
     }
 
@@ -303,7 +303,7 @@ export class Expectation {
      *
      * @param selector
      */
-    static notPresent(selector) {
+    static async notPresent(selector) {
         return ActionUtil.expectExecutedAction(async () => await WaitCondition.notPresent(selector));
     }
 
@@ -312,7 +312,7 @@ export class Expectation {
      *
      * @param selector
      */
-    static present(selector) {
+    static async present(selector) {
         return ActionUtil.expectExecutedAction(async () => await WaitCondition.present(selector));
     }
 
@@ -321,7 +321,7 @@ export class Expectation {
      *
      * @param selector
      */
-    static presentWithText(selector) {
+    static async presentWithText(selector) {
         return ActionUtil.expectExecutedAction(async () => await WaitCondition.presentWithText(selector));
     }
 
@@ -341,7 +341,7 @@ export class Expectation {
      * @param selector
      * @param text
      */
-    static textContains(selector, text) {
+    static async textContains(selector, text) {
         return ActionUtil.expectExecutedAction(() => WaitCondition.textContains(selector, text));
     }
 
@@ -351,7 +351,7 @@ export class Expectation {
      * @param selector
      * @param text
      */
-    static textEquals(selector, text) {
+    static async textEquals(selector, text) {
         return ActionUtil.expectExecutedAction(() => WaitCondition.textEquals(selector, text));
     }
 
@@ -361,7 +361,7 @@ export class Expectation {
      * @param selector
      * @param text
      */
-    static textNotEqual(selector, text) {
+    static async textNotEqual(selector, text) {
         const msg = `for element's text not to be ${text}`;
         return checkCondition(selector, msg, Condition.not(Condition.textEquals(text)));
     }
@@ -372,7 +372,7 @@ export class Expectation {
      * @param selector
      * @param regex
      */
-    static textMatches(selector, regex) {
+    static async textMatches(selector, regex) {
         const msg = `for element text to be matched by '${regex}'`;
         return checkCondition(selector, msg, Condition.textMatches(regex));
     }
