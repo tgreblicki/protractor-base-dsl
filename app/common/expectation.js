@@ -164,7 +164,7 @@ export class Expectation {
      * @param selector
      * @param expectedCount
      */
-    static async async countAtLeast(selector, expectedCount) {
+    static async countAtLeast(selector, expectedCount) {
         const countIs = () =>
             element.all(By.css(selector)).count().then((count) => R.gte(count, expectedCount));
         return Expectation.condition(countIs);
@@ -177,7 +177,7 @@ export class Expectation {
      * @param dateValue
      * @param defaultDateFormat
      */
-    static async async dateValue(selector, dateValue, defaultDateFormat) {
+    static async dateValue(selector, dateValue, defaultDateFormat) {
         const expectationFunction = async (dateFormat) =>
             await Expectation.attributeEquals(selector, 'value', dateValue.format(dateFormat));
         return Expectation.withLocaleDate(expectationFunction, defaultDateFormat);
@@ -188,7 +188,7 @@ export class Expectation {
      *
      * @param selector
      */
-    static async async disabled(selector) {
+    static async disabled(selector) {
         return ActionUtil.expectExecutedAction(async () => await WaitCondition.disabled(selector));
     }
 
@@ -197,7 +197,7 @@ export class Expectation {
      *
      * @param selector
      */
-    static async async displayed(selector) {
+    static async displayed(selector) {
         return ActionUtil.expectExecutedAction(async () => await WaitCondition.displayed(selector));
     }
 
